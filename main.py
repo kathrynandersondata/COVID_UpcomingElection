@@ -169,5 +169,63 @@ insert data into db:
 bulk_insert_demog(demo_data[1:])
 ''' 
 
+# DATA SOURCE 4: POLITICAL PARTY DATA 
+
+tables['politics'] = (
+    "CREATE TABLE `politics` ("
+    "  `fips` int,"
+    "  `dem_votes16` int,"
+    "  `rep_votes16` int,"
+    "  `total_votes16` int,"
+    "  `percent_dem16` float,"
+    "  `percent_rep16` float,"
+    "  `dif_votes16` int,"
+    "  `state_abbrev` char(2),"
+    "  `county` text,"
+    "  `total_votes12` int,"
+    "  `dem_votes12` int,"
+    "  `rep_votes12` int,"
+    "  `percent_dem12` float,"
+    "  `percent_rep12` float,"
+    "  `dif_votes12` int,"
+    "  `percent_hs` int,"
+    "  `percent_uni` int"
+    ") ENGINE=InnoDB")
+
+def create_politics(dictionary):
+    cursor.execute(dictionary['politics'])
+
+'''
+create the table:
+create_politics(tables)
+'''
+
+politics_data=read_csv('votes.csv')
+clean_politics_data=[]
+for row in politics_data: # selecting only the columns from the csv that we want 
+    clean_politics_data.append(row[2:9]+row[10:12]+row[13:16]+row[18:21]+row[44:46])
+
+def bulk_insert_politics(data):
+    min_index=0
+    max_index=1000
+    while max_index < len(data):
+        insert_politics(data[min_index:max_index])
+        min_index += 1001
+        max_index += 1001
+    insert_politics(data[min_index:]) #insert the remaining few data points 
+
+def insert_politics(data):
+    to_add = ("INSERT INTO politics "
+               "(fips, dem_votes16, rep_votes16, total_votes16, percent_dem16, percent_rep16, dif_votes16, state_abbrev, county, "
+               " total_votes12, dem_votes12, rep_votes12, percent_dem12, percent_rep12, dif_votes12, percent_hs, percent_uni) "
+               " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+    cursor.executemany(to_add, data)
+    connection.commit()
+
+'''
+insert data into db: 
+bulk_insert_politics(clean_politics_data[1:]) 
+'''
+
 cursor.close()
 connection.close() 
