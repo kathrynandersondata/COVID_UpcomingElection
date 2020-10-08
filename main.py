@@ -25,7 +25,7 @@ sp500 = getStockData(sp500_list) #dict
 sp500_df = data.DataReader(sp500_list, 'yahoo',start=datetime.datetime(2015,1,1), 
                                     end=datetime.datetime.now())['Adj Close']
 
-# DATA SOURCE 2: CSV FILE 
+# DATA SOURCE 2: COVID CASES BY COUNTY (CSV FILE) 
 connection = mysql.connector.connect(user='root', password='dataadmin',
                               host='localhost')
 cursor=connection.cursor(buffered=True)
@@ -86,12 +86,6 @@ insert data into db:
 bulk_insert(csv_data[1:])
 '''
 
-# QUERY GENERAL FORMAT 
-''' 
-RUNNING QUERIES 
-query="select count(*) from covid_cases where state='California'; "
-cursor.execute(query)
-''' 
 def result(cursor):
     return [list(row) for row in cursor]
 
@@ -126,38 +120,6 @@ for index, row in sp500_df.iterrows():
 # inserting the data 
 insert_stock_data(data)
 ''' 
-
-# FINDING CORRELATION BETWEEN COVID DATA AND STOCK MARKET 
-
-correl_query = ('select covid_cases.date, sum(cases), sum(deaths), avg(stock_data.close) ' 
-    ' from covid_cases ' 
-    ' left join stock_data' 
-    ' on stock_data.date=covid_cases.date ' 
-    ' group by date; ') 
-
-cursor.execute(correl_query)
-daily_correl=result(cursor)
-daily_correl_df=DataFrame(daily_correl, columns=['Date','Cases','Deaths','S&P500'])
-daily_correl_df['NewCases']=daily_correl_df['Cases'].astype('float').diff()
-daily_correl_df['NewCases'][daily_correl_df['NewCases']<0]=0
-
-# CREATE COMBO CHART 
-fig, ax1 = plt.subplots(figsize=(10,6))
-color = 'green'
-# cases line graph 
-ax1.set_title('COVID-19 Correlation with Stock Market', fontsize=16)
-ax1.set_xlabel('Date', fontsize=16)
-ax1.set_ylabel('Daily New COVID Cases', fontsize=16)
-ax1=sns.lineplot(x='Date', y='NewCases', data = daily_correl_df.dropna(), sort=False, color=color)
-ax1.tick_params(axis='y')
-ax2 = ax1.twinx() #specify we want to share the same x-axis
-color = 'purple'
-# S&P line graph 
-ax2.set_ylabel('Share of S&P500 ($)', fontsize=16)
-ax2 = sns.lineplot(x='Date', y='S&P500', data = daily_correl_df.dropna(), sort=False, color=color)
-ax2.tick_params(axis='y', color=color)
-#plt.ylim(reversed(plt.ylim()))
-#plt.show()
 
 # DATA SOURCE 3 DEMOGRAPHIC DATA 
 
@@ -207,22 +169,5 @@ insert data into db:
 bulk_insert_demog(demo_data[1:])
 ''' 
 
-# QUERY WITH CASES AND DEMOGRAPHIC INFO 
-demo_cases_query = ('select demographics.fips, max(cases), max(deaths), max(median_age), '
-    ' max(population), max(percent_female) from covid_cases '
-    ' join demographics on demographics.fips=covid_cases.fips '
-    ' group by covid_cases.fips '
-    ' order by max(cases) desc; ')
-
-cursor.execute(demo_cases_query)
-demo_cases=result(cursor)
-demo_cases_df=DataFrame(demo_cases, columns=['Fips','Cases','Deaths','Age','Population','Percent_Female'])
-
 cursor.close()
 connection.close() 
-
-'''
-Ideas:
-1. mask use?
-2. demographics
-'''
