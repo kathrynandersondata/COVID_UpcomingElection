@@ -198,12 +198,14 @@ def create_politics(dictionary):
 '''
 create the table:
 create_politics(tables)
-'''
+''' 
 
 politics_data=read_csv('votes.csv')
-clean_politics_data=[]
-for row in politics_data: # selecting only the columns from the csv that we want 
-    clean_politics_data.append(row[2:9]+row[10:12]+row[13:16]+row[18:21]+row[44:46])
+def create_clean_politics_data():
+    clean_politics_data=[]
+    for row in politics_data: # selecting only the columns from the csv that we want 
+        clean_politics_data.append(row[2:9]+row[10:12]+row[13:16]+row[18:21]+row[44:46])
+    return clean_politics_data 
 
 def bulk_insert_politics(data):
     min_index=0
@@ -222,10 +224,12 @@ def insert_politics(data):
     cursor.executemany(to_add, data)
     connection.commit()
 
+politics_dataset=create_clean_politics_data()
+
 '''
 insert data into db: 
-bulk_insert_politics(clean_politics_data[1:]) 
-'''
+bulk_insert_politics(politics_dataset[1:]) 
+''' 
 
 cursor.close()
 connection.close() 
