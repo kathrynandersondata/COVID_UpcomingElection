@@ -83,14 +83,22 @@ sns.lmplot(data=pop_cases_df, x='Population', y='Cases', hue='Affiliation')
 
 # finding cases/population by party 
 
-cases_per_pop_query=('select affiliations.affiliation as affiliation, sum(cases), sum(deaths), sum(population),  ' 
+cases_per_pop_query=('create temporary table cases_per_pop' 
+    ' select affiliations.affiliation as affiliation, sum(cases), sum(deaths), sum(population),  ' 
     ' avg(cases/population) as cases_per_pop from demographics ' 
     ' inner join affiliations on affiliations.fips=demographics.fips ' 
     ' group by affiliation; ')
 cursor.execute(cases_per_pop_query)
+cases_per_pop_query2=('select * from cases_per_pop;')
+cursor.execute(cases_per_pop_query2)
 cases_per_pop=result(cursor)
 cases_per_pop_df=DataFrame(cases_per_pop, columns=['Affiliation', 'Total_Cases','Total_Deaths','Total_Population','Avg_Cases_Per_Pop'])
 # returns 2.5% cases/population for Democrats, 2.0% cases/population for Republicans 
+
+# finding cases/population by party over time 
+
+
+
 
 # PLOTTING NEW CASES OVER TIME BY PARTY
 
