@@ -107,6 +107,7 @@ cursor.execute(new_cases_party_query2)
 new_cases_party=result(cursor)
 new_cases_party_df=DataFrame(new_cases_party, columns=['Date','Affiliation','Total_Cases','Total_Deaths'])
 
+# democrat df 
 dem_newcases_query=('select * from cases_by_party where affiliation="D";')
 cursor.execute(dem_newcases_query)
 dem_newcases=result(cursor)
@@ -114,12 +115,34 @@ dem_newcases_df=DataFrame(dem_newcases, columns=['Date','Affiliation','Total_Cas
 dem_newcases_df['New_Cases'] = dem_newcases_df.Total_Cases.diff()
 dem_newcases_df['New_Deaths'] = dem_newcases_df.Total_Deaths.diff()
 
+# republican df 
 rep_newcases_query=('select * from cases_by_party where affiliation="R";')
 cursor.execute(rep_newcases_query)
 rep_newcases=result(cursor)
 rep_newcases_df=DataFrame(rep_newcases, columns=['Date','Affiliation','Total_Cases','Total_Deaths'])
 rep_newcases_df['New_Cases'] = rep_newcases_df.Total_Cases.diff()
 rep_newcases_df['New_Deaths'] = rep_newcases_df.Total_Deaths.diff()
+
+# combined df 
+combined_newcases=DataFrame(dem_newcases_df['Date'], columns=['Date'])
+combined_newcases['Dem_Cases'] = dem_newcases_df['New_Cases']
+combined_newcases['Dem_Deaths']=dem_newcases_df['New_Deaths']
+
+newcases=combined_newcases.merge(rep_newcases_df, on='Date', how='left')
+newcases_df=newcases.drop(columns=['Affiliation','Total_Cases','Total_Deaths'])
+newcases_df=newcases_df.rename(columns={'New_Cases':'Rep_Cases', 'New_Deaths':'Rep_Deaths'})
+
+newcases_df['Dem_Cases']=newcases_df['Dem_Cases'].astype(float)
+newcases_df['Dem_Deaths']=newcases_df['Dem_Deaths'].astype(float)
+newcases_df['Rep_Cases']=newcases_df['Rep_Cases'].astype(float)
+newcases_df['Rep_Deaths']=newcases_df['Rep_Deaths'].astype(float)
+
+newcases_df['Perc_Dem_Cases']=newcases_df['Dem_Cases']/(newcases_df['Rep_Cases']+newcases_df['Dem_Cases'])
+newcases_df['Perc_Rep_Cases']=newcases_df['Rep_Cases']/(newcases_df['Rep_Cases']+newcases_df['Dem_Cases'])
+
+newcases_df.plot(x="Date", y=["Perc_Dem_Cases", "Perc_Rep_Cases"], kind="line", ylim=[0,1])
+if __name__ == "__main__":
+    plt.show()
 
 cursor.close()
 connection.close() 

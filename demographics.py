@@ -87,9 +87,10 @@ cursor.execute(first_date_query)
 first_date=result(cursor)
 first_date_df=DataFrame(first_date, columns=['Date','Fips','County','State','Cases','Deaths']) 
 
+
 sns.scatterplot(data=first_date_df, x='Date', y='Cases')
-#plt.show()
-
-
+if __name__ == "__main__":
+    plt.show()
+    
 cursor.close()
 connection.close() 
