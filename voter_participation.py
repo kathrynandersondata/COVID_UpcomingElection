@@ -60,8 +60,7 @@ states={'AL':'Alabama','AK':'Alaska','AZ':'Arizona', 'AR':'Arkansas','CA':'Calif
 'UT':'Utah','VT':'Vermont','VA':'Virginia','WA':'Washington','WV':'West Virginia',
 'WI':'Wisconsin','WY':'Wyoming'}
 swings=[states[state] for state in swings_list]
-swing_col_query=(f'select state, case when state in {tuple(swings)} then "S" else "N" end as swing '
-    ' from covid_cases group by state;')
+swing_col_query=(f'select state, case when state in {tuple(swings)} then "S" else "N" end as swing from covid_cases group by state;')
 cursor.execute(swing_col_query)
 states_swings=result(cursor)
 states_swings_df=DataFrame(states_swings, columns=['State','Status'])
@@ -72,9 +71,25 @@ sns.jointplot(x=swing_cases_df['Cases'].astype(float), y=swing_cases_df['Deaths'
 if __name__ == "__main__":
     plt.show()
 
-impacted_states=(swing_cases_df.sort_values(by=['Deaths', 'Status']) # returns PA, MI, FL
+impacted_states=(swing_cases_df.sort_values(by=['Deaths', 'Status'])) # returns PA, MI, FL
 
 #   Time series of swing states cases versus national
+
+# WHAT DOES VOTER PARTICIPATION LOOK LIKE IN SWING STATES?
+
+participation_query=('select state, sum(total_votes16) as votes, sum(population) as population, avg(median_age) as avg_age,'
+    ' sum(total_votes16)/sum(population) as percent_voters from politics ' 
+    ' inner join demographics on demographics.fips=politics.fips ' 
+    ' group by state;')
+cursor.execute(participation_query)
+participation=result(cursor)
+participation_df=DataFrame(participation, columns=['State','Votes','Population','Avg_Age','Percent_Voters'])
+
+participation_swings_df=participation_df.merge(swing_cases_df, on='State', how='left')
+
+sns.jointplot(data=participation_swings_df,x='Cases',y='Percent_Voters',hue='Status')
+if __name__ == "__main__":
+    plt.show() # Swing states have higher percentages of voters
 
 
 cursor.close()
