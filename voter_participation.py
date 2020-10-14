@@ -75,6 +75,16 @@ impacted_states=(swing_cases_df.sort_values(by=['Deaths', 'Status'])) # returns 
 
 #   Time series of swing states cases versus national
 
+cases_over_time_query=('select date, state, sum(cases) as cases, sum(deaths) as deaths from covid_cases group by date, state;')
+cursor.execute(cases_over_time_query)
+cases_over_time=result(cursor)
+cases_df=DataFrame(cases_over_time, columns=['Date','State','Cases','Deaths'])
+cases_state_df=cases_df.merge(states_swings_df, on='State', how='left')
+
+sns.lineplot(data=cases_state_df, x='Date',y='Cases',style='Status', ci=None)
+if __name__ == "__main__":
+    plt.show()
+
 # WHAT DOES VOTER PARTICIPATION LOOK LIKE IN SWING STATES?
 
 participation_query=('select state, sum(total_votes16) as votes, sum(population) as population, avg(median_age) as avg_age,'
