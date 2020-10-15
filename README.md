@@ -20,7 +20,13 @@ Thesis 1: The political party associated with a county is strongly correlated wi
 
     Graphs: 
 
-        1. 
+        1. Cases and Deaths by Affiliation
+
+        2. Cases and Mortality by Affiliation
+
+        3. Population and Cases by Affiliation
+
+        4. Percent Cases by Affiliation Over Time
 
 Thesis 2: The extent to which COVID has impacted swing states will impact the way they vote in the upcoming presidential election.
 
@@ -66,7 +72,7 @@ Smaller Data Explorations:
 
         Graphs: 
 
-            1. 
+            1. Population and Cases
     
 
 

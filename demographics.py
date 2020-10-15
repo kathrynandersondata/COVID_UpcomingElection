@@ -19,13 +19,13 @@ demo_cases_df=DataFrame(demo_cases, columns=['Cases','Deaths','Age','Population'
 
 # CREATING SCATTERPLOTS TO FIND CORRELATION BETWEEN CASES/DEATHS AND VARIOUS DEMOGRAPHIC FACTORS 
 
-p=sns.PairGrid(demo_cases_df)
-p.map_upper(sns.scatterplot)
-p.map_lower(sns.scatterplot)
-p.map_diag(sns.histplot, kde=True)
-p.fig.set_size_inches(15,8)
-p.fig.suptitle('Various Factor Influences on COVID Cases and Deaths')
 if __name__ == "__main__":
+    p=sns.PairGrid(demo_cases_df)
+    p.map_upper(sns.scatterplot)
+    p.map_lower(sns.scatterplot)
+    p.map_diag(sns.histplot, kde=True)
+    p.fig.set_size_inches(15,8)
+    p.fig.suptitle('Various Factor Influences on COVID Cases and Deaths')
     plt.show()
 
 correl=pearsonr(demo_cases_df.Population, demo_cases_df.Cases) # returns 0.94 
@@ -38,11 +38,11 @@ cursor.execute(first_date_query)
 first_date=result(cursor)
 first_date_df=DataFrame(first_date, columns=['Date','Fips','County','State','Cases','Deaths']) 
 
-p2=sns.displot(data=first_date_df, x='Date', y='Cases', kind='hist')
-plt.title('First Instance of COVID and Effects on Total Cases')
-plt.ylim(0, 1000000)
-p2.fig.set_size_inches(7,7)
 if __name__ == "__main__":
+    p2=sns.displot(data=first_date_df, x='Date', y='Cases', kind='hist')
+    plt.title('First Instance of COVID and Effects on Total Cases')
+    plt.ylim(0, 1000000)
+    p2.fig.set_size_inches(7,7)
     plt.show()
     
 cursor.close()

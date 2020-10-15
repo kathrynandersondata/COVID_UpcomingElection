@@ -13,6 +13,7 @@ cursor.execute(remove_unknown_query) # removes unknowns
 # DETERMINING OUTLIERS IN CASES PER POPULATION 
 
 sns.lmplot(data=demo_cases_df, x='Population', y='Cases') 
+plt.title('Population and Cases')
 if __name__ == "__main__":
     plt.show()
 

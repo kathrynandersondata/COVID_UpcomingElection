@@ -1,5 +1,5 @@
 from main import * 
-from demographics import * 
+from demographics import demo_cases_query
 
 connection = mysql.connector.connect(user='root', password='dataadmin',
                               host='localhost', database='covidstocks')
@@ -30,10 +30,12 @@ affiliation=result(cursor)
 affiliation_df=DataFrame(affiliation, columns = ['fips','cases','deaths','affiliation'])
 
 sns.lmplot(data=affiliation_df, x='cases', y='deaths', hue='affiliation')
+plt.title('Cases and Deaths by Affiliation')
 if __name__ == "__main__":
-    plt.show()
+    plt.show() # plot 1 
 
 # FINDING CORRELATION BY PARTY 
+
 rep_query=('select * from affiliations where affiliation="Republican";')
 cursor.execute(rep_query)
 reps=result(cursor)
@@ -66,9 +68,12 @@ dem_mortality=('select avg(mortality) from affil_mortality'
 cursor.execute(dem_mortality)
 dem_mort=result(cursor) # 3.0%
 
-sns.jointplot(data=affil_mort_df, x='Cases', y='Mortality', hue='Affiliation')
+sns.displot(data=affil_mort_df, x='Cases', y='Mortality', hue='Affiliation', kind='kde', fill=True)
+plt.title('Cases and Mortality by Affiliation')
+plt.xlim(0,30000)
+plt.ylim(0,0.10)
 if __name__ == "__main__":
-    plt.show()
+    plt.show() # plot 2 
 
 # PLOTTING POPULATION AND CASES BY PARTY
 
@@ -81,8 +86,9 @@ pop_cases=result(cursor)
 pop_cases_df=DataFrame(pop_cases, columns=['Fips','Cases','Deaths','Population','Affiliation'])
 
 sns.lmplot(data=pop_cases_df, x='Population', y='Cases', hue='Affiliation')
+plt.title('Population and Cases by Affiliation')
 if __name__ == "__main__":
-    plt.show()
+    plt.show() # plot 3 
 
 # finding cases/population by party 
 
@@ -97,11 +103,6 @@ cursor.execute(cases_per_pop_query2)
 cases_per_pop=result(cursor)
 cases_per_pop_df=DataFrame(cases_per_pop, columns=['Affiliation', 'Total_Cases','Total_Deaths','Total_Population','Avg_Cases_Per_Pop'])
 # returns 2.5% cases/population for Democrats, 2.0% cases/population for Republicans 
-
-# finding cases/population by party over time 
-
-
-
 
 # PLOTTING NEW CASES OVER TIME BY PARTY
 
@@ -152,8 +153,9 @@ newcases_df['Perc_Dem_Cases']=newcases_df['Dem_Cases']/(newcases_df['Rep_Cases']
 newcases_df['Perc_Rep_Cases']=newcases_df['Rep_Cases']/(newcases_df['Rep_Cases']+newcases_df['Dem_Cases'])
 
 newcases_df.plot(x="Date", y=["Perc_Dem_Cases", "Perc_Rep_Cases"], kind="line", ylim=[0,1])
+plt.title('Percent Cases by Affiliation Over Time')
 if __name__ == "__main__":
-    plt.show()
+    plt.show() # plot 4 
 
 cursor.close()
 connection.close() 
