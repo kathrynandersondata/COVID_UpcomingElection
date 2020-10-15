@@ -13,7 +13,8 @@ cursor.execute(remove_unknown_query) # removes unknowns
 # DETERMINING OUTLIERS IN CASES PER POPULATION 
 
 sns.lmplot(data=demo_cases_df, x='Population', y='Cases') 
-# plt.show()
+if __name__ == "__main__":
+    plt.show()
 
 cursor.execute(demo_cases_query) # recreates temp table that matches cases with demo info 
 poor_perf_query=('select * from fips_table where cases>250000 and population<2000000;')
