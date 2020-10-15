@@ -30,7 +30,8 @@ affiliation=result(cursor)
 affiliation_df=DataFrame(affiliation, columns = ['fips','cases','deaths','affiliation'])
 
 sns.lmplot(data=affiliation_df, x='cases', y='deaths', hue='affiliation')
-#plt.show()
+if __name__ == "__main__":
+    plt.show()
 
 # FINDING CORRELATION BY PARTY 
 rep_query=('select * from affiliations where affiliation="Republican";')
@@ -66,7 +67,8 @@ cursor.execute(dem_mortality)
 dem_mort=result(cursor) # 3.0%
 
 sns.jointplot(data=affil_mort_df, x='Cases', y='Mortality', hue='Affiliation')
-#plt.show()
+if __name__ == "__main__":
+    plt.show()
 
 # PLOTTING POPULATION AND CASES BY PARTY
 
@@ -79,7 +81,8 @@ pop_cases=result(cursor)
 pop_cases_df=DataFrame(pop_cases, columns=['Fips','Cases','Deaths','Population','Affiliation'])
 
 sns.lmplot(data=pop_cases_df, x='Population', y='Cases', hue='Affiliation')
-#plt.show()
+if __name__ == "__main__":
+    plt.show()
 
 # finding cases/population by party 
 
