@@ -56,7 +56,6 @@ create the table:
 create_covid_cases(tables)
 '''
 
-#retrieving data from CSV file 
 def read_csv(filename):
     with open(filename) as file: 
         csv_reader= reader(file)
@@ -121,7 +120,7 @@ for index, row in sp500_df.iterrows():
 insert_stock_data(data)
 ''' 
 
-# DATA SOURCE 3 DEMOGRAPHIC DATA 
+# DATA SOURCE 3: DEMOGRAPHIC DATA BY COUNTY (CSV FILE)
 
 tables['demographics'] = (
     "CREATE TABLE `demographics` ("
@@ -169,7 +168,7 @@ insert data into db:
 bulk_insert_demog(demo_data[1:])
 ''' 
 
-# DATA SOURCE 4: POLITICAL PARTY DATA 
+# DATA SOURCE 4: 2016 AND 2012 ELECTION DATA BY COUNTY (CSV FILE)
 
 tables['politics'] = (
     "CREATE TABLE `politics` ("
@@ -230,6 +229,31 @@ politics_dataset=create_clean_politics_data()
 insert data into db: 
 bulk_insert_politics(politics_dataset[1:]) 
 ''' 
+
+# DATA CLEANSING: FINDING BLANKS AND ADDING FIPS FOR HIGHER ACCURACY 
+
+find_blanks_query=("select distinct(county), state from covid_cases where fips='' and county<>'Unknown'; ")
+cursor.execute(find_blanks_query)
+find_blanks=list(result(cursor))
+
+find_NYC_query=('select fips, county, state from demographics '
+    ' where state="New York" and county like "New York%";')
+cursor.execute(find_NYC_query)
+find_NYC=list(result(cursor))
+
+find_Jop_query=('select fips, county, state from demographics '
+    ' where state="Missouri" and county like "Joplin%";')
+cursor.execute(find_Jop_query)
+find_Jop=list(result(cursor)) # no match 
+
+find_KCM_query=('select fips, county, state from demographics '
+    ' where state="Missouri" and county like "Kansas City%";')
+cursor.execute(find_KCM_query)
+find_KCM=list(result(cursor))  # no match 
+
+# update the table to add fips to New York City 
+nyc_update_query=(f'update covid_cases set fips={find_NYC[0][0]} where county="New York City";')
+cursor.execute(nyc_update_query)
 
 cursor.close()
 connection.close() 

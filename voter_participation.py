@@ -7,6 +7,22 @@ cursor=connection.cursor(buffered=True)
 
 # Is there an assocation between political party and voter participation rate?
 
+voter_party_query=('select politics.fips, demographics.state, dem_votes16, rep_votes16, ' 
+    ' total_votes16, population, total_votes16/population as vote_rate,'
+    ' case when dem_votes16>rep_votes16 then "D" else "R" end as affiliation'
+    ' from politics'
+    ' inner join demographics on demographics.fips=politics.fips;')
+cursor.execute(voter_party_query)
+voter_party=result(cursor)
+voter_party_df=DataFrame(voter_party,columns=['Fips','State','Dem_Votes','Rep_Votes','Total_Votes','Population','Vote_Rate', 'Affiliation'])
+
+sns.jointplot(x=voter_party_df['Population'].astype(float),y=voter_party_df['Vote_Rate'].astype(float),hue=voter_party_df['Affiliation'])
+#plt.show()
+
+rep_vote_rate=voter_party_df.query("Affiliation == 'R'")['Vote_Rate'].mean()
+dem_vote_rate=voter_party_df.query("Affiliation == 'D'")['Vote_Rate'].mean()
+print(rep_vote_rate, dem_vote_rate)
+
 # HOW ARE THE SWING STATES DOING DURING COVID?
 
 # Step 1: Which are the swing states in both 2016 and 2012 elections?
@@ -98,8 +114,8 @@ participation_df=DataFrame(participation, columns=['State','Votes','Population',
 participation_swings_df=participation_df.merge(swing_cases_df, on='State', how='left')
 
 sns.jointplot(data=participation_swings_df,x='Cases',y='Percent_Voters',hue='Status')
-if __name__ == "__main__":
-    plt.show() # Swing states have higher percentages of voters
+#if __name__ == "__main__":
+#    plt.show() # Swing states have higher percentages of voters
 
 
 cursor.close()
