@@ -52,11 +52,15 @@ Smaller Data Explorations:
 
             1. COVID-19 Correlation with Stock Market
     
-    In mortality.py, I crunched some numbers regarding mortality rates. 
+    In mortality.py, I calculated the average mortality rate across the country and examined to see if there were any outliers. The counties with the highest mortality rates (greater than 15%) had fewer than 500 total cases, and were the counties with comparatively low populations (22,000 average population compared to nationwide average of 101,000). I next looked at counties with high mortality rates and high cases per population, and found Georgia had 6 of these outliers and Texas had four. 
 
         Graphs: 
         
-            1. 
+            1. Cases and Mortality Rates
+
+            2. Percent Population with COVID and Mortality Rates
+
+            3. High Mortality Counties by Affiliation
     
     In outliers.py, I investigated the possibility that some counties had higher populations but lower cases, but unfortunately only found one outlier: New York, which had a high number of cases and deaths, even for its population. 
 
