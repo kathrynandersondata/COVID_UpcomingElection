@@ -29,8 +29,11 @@ cursor.execute(affiliation_query)
 affiliation=result(cursor)
 affiliation_df=DataFrame(affiliation, columns = ['fips','cases','deaths','affiliation'])
 
-sns.lmplot(data=affiliation_df, x='cases', y='deaths', hue='affiliation')
+p4=sns.lmplot(data=affiliation_df, x='cases', y='deaths', hue='affiliation')
 plt.title('Cases and Deaths by Affiliation')
+plt.xlabel('Cases')
+plt.ylabel('Deaths')
+p4.fig.set_size_inches(8,8)
 if __name__ == "__main__":
     plt.show() # plot 1 
 
@@ -68,10 +71,13 @@ dem_mortality=('select avg(mortality) from affil_mortality'
 cursor.execute(dem_mortality)
 dem_mort=result(cursor) # 3.0%
 
-sns.displot(data=affil_mort_df, x='Cases', y='Mortality', hue='Affiliation', kind='kde', fill=True)
+p5=sns.displot(data=affil_mort_df, x='Cases', y='Mortality', hue='Affiliation', kind='kde', fill=True)
 plt.title('Cases and Mortality by Affiliation')
 plt.xlim(0,30000)
 plt.ylim(0,0.10)
+plt.xlabel('Cases')
+plt.ylabel('Mortality Rate')
+p5.fig.set_size_inches(8,8)
 if __name__ == "__main__":
     plt.show() # plot 2 
 
@@ -85,8 +91,11 @@ cursor.execute(pop_cases_query)
 pop_cases=result(cursor)
 pop_cases_df=DataFrame(pop_cases, columns=['Fips','Cases','Deaths','Population','Affiliation'])
 
-sns.lmplot(data=pop_cases_df, x='Population', y='Cases', hue='Affiliation')
+p6=sns.lmplot(data=pop_cases_df, x='Population', y='Cases', hue='Affiliation')
 plt.title('Population and Cases by Affiliation')
+plt.xlabel('Population (Millions)')
+plt.ylabel('Cases')
+p6.fig.set_size_inches(8,8)
 if __name__ == "__main__":
     plt.show() # plot 3 
 
@@ -152,8 +161,10 @@ newcases_df['Rep_Deaths']=newcases_df['Rep_Deaths'].astype(float)
 newcases_df['Perc_Dem_Cases']=newcases_df['Dem_Cases']/(newcases_df['Rep_Cases']+newcases_df['Dem_Cases'])
 newcases_df['Perc_Rep_Cases']=newcases_df['Rep_Cases']/(newcases_df['Rep_Cases']+newcases_df['Dem_Cases'])
 
-newcases_df.plot(x="Date", y=["Perc_Dem_Cases", "Perc_Rep_Cases"], kind="line", ylim=[0,1])
+newcases_df.plot(x="Date", y=["Perc_Dem_Cases", "Perc_Rep_Cases"], kind="line", ylim=[0,1], figsize=(8,8))
 plt.title('Percent Cases by Affiliation Over Time')
+plt.xlabel('Date')
+plt.ylabel('Percent of New COVID Cases')
 if __name__ == "__main__":
     plt.show() # plot 4 
 

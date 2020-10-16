@@ -12,8 +12,12 @@ cursor.execute(remove_unknown_query) # removes unknowns
 
 # DETERMINING OUTLIERS IN CASES PER POPULATION 
 
-sns.lmplot(data=demo_cases_df, x='Population', y='Cases') 
+p3=sns.lmplot(data=demo_cases_df, x='Population', y='Cases') 
 plt.title('Population and Cases')
+plt.xlabel('Population')
+plt.ylabel('COVID Cases')
+plt.ticklabel_format(style='plain')
+p3.fig.set_size_inches(8,8)
 if __name__ == "__main__":
     plt.show()
 

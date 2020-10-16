@@ -78,11 +78,13 @@ states_swings_df=DataFrame(states_swings, columns=['State','Status'])
 
 swing_cases_df=agg_covid_df.merge(states_swings_df, on='State', how='left')
 
-sns.jointplot(x=swing_cases_df['Cases'].astype(float), y=swing_cases_df['Deaths'].astype(float), hue=swing_cases_df['Status'])
-plt.title('Cases and Deaths for Swing and Non-Swing States')
 if __name__ == "__main__":
+    sns.scatterplot(x=swing_cases_df['Cases'].astype(float), y=swing_cases_df['Deaths'].astype(float), hue=swing_cases_df['Status'])
+    plt.title('Cases and Deaths for Swing and Non-Swing States')
+    plt.xlabel('Cases')
+    plt.ylabel('Deaths')
     plt.show() # plot 1 
-
+    
 impacted_states=(swing_cases_df.sort_values(by=['Deaths', 'Status'])) # returns PA, MI, FL
 
 # Time series of swing states cases versus national
@@ -100,14 +102,18 @@ pop_df=DataFrame(pop, columns=['State','Population'])
 cases_pop_df=cases_state_df.merge(pop_df, how='left', on='State')
 cases_pop_df['Cases_Per_Pop']=cases_pop_df['Cases']/cases_pop_df['Population']
 
-sns.lineplot(data=cases_state_df, x='Date',y='Cases',style='Status', ci=None)
-plt.title('Cases Over Time for Swing and Non-Swing States')
 if __name__ == "__main__":
+    sns.lineplot(data=cases_state_df, x='Date',y='Cases',style='Status', ci=None)
+    plt.title('Cases Over Time for Swing and Non-Swing States')
+    plt.xlabel('Date', fontsize=10)
+    plt.ylabel('Cases')
     plt.show() # plot 2 
 
-sns.lineplot(data=cases_pop_df, x='Date',y='Cases_Per_Pop',style='Status', ci=None)
-plt.title('Percent of Population Infected Over Time for Swing and Non-Swing States')
 if __name__ == "__main__":
+    sns.lineplot(data=cases_pop_df, x='Date',y='Cases_Per_Pop',style='Status', ci=None)
+    plt.title('Percent of Population Infected Over Time for Swing and Non-Swing States')
+    plt.xlabel('Date', fontsize=10)
+    plt.ylabel('Percent of Population with COVID')
     plt.show() # plot 3 
 
 # SWING STATES: VOTER PARTICIPATION 
@@ -122,10 +128,12 @@ participation_df=DataFrame(participation, columns=['State','Votes','Population',
 
 participation_swings_df=participation_df.merge(swing_cases_df, on='State', how='left')
 
-sns.displot(data=participation_swings_df,x='Cases',y='Percent_Voters',hue='Status')
-plt.title('Percentage of Population that Votes - Swing and Non-Swing States')
 if __name__ == "__main__":
-    plt.show() # Swing states have higher percentages of voters
+    sns.displot(data=participation_swings_df,x='Cases',y='Percent_Voters',hue='Status')
+    plt.title('Percentage of Population that Votes - Swing and Non-Swing States', fontsize=12)
+    plt.xlabel('Cases')
+    plt.ylabel('Percent of Total Population that Voted in 2016 Election')
+    plt.show() #  plot 4 - swing states have higher percentages of voters
 
 cursor.close()
 connection.close() 

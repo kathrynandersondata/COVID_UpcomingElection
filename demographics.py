@@ -26,7 +26,7 @@ if __name__ == "__main__":
     p.map_diag(sns.histplot, kde=True)
     p.fig.set_size_inches(15,8)
     p.fig.suptitle('Various Factor Influences on COVID Cases and Deaths')
-    plt.show()
+    plt.show() # plot 1 
 
 correl=pearsonr(demo_cases_df.Population, demo_cases_df.Cases) # returns 0.94 
 
@@ -43,7 +43,9 @@ if __name__ == "__main__":
     plt.title('First Instance of COVID and Effects on Total Cases')
     plt.ylim(0, 1000000)
     p2.fig.set_size_inches(7,7)
-    plt.show()
+    plt.xlabel('Date of First COVID Case')
+    plt.ylabel('Total COVID Cases (in Millions)')
+    plt.show() # plot 2 
     
 cursor.close()
 connection.close() 

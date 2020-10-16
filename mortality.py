@@ -34,6 +34,8 @@ mort=result(cursor)
 mort_df=DataFrame(mort, columns=['Fips','County','State','Total_Cases','Total_Deaths','Mortality'])
 sns.scatterplot(data=mort_df, x='Total_Cases', y='Mortality') 
 plt.title('Cases and Mortality Rates')
+plt.xlabel('Total Cases')
+plt.ylabel('Mortality Rate')
 if __name__ == "__main__":
     plt.show() # plot 1 
 
@@ -71,6 +73,8 @@ sort_mo_df=mort_outliers_df.sort_values(by=['Cases_Per_Pop','Mortality'], ascend
 
 sns.scatterplot(data=sort_mo_df, x='Cases_Per_Pop', y='Mortality') 
 plt.title('Percent Population with COVID and Mortality Rates')
+plt.xlabel('Percent of Population with COVID')
+plt.ylabel('Mortality Rate')
 if __name__ == "__main__":
     plt.show() # plot 2 
 
@@ -96,6 +100,8 @@ mort_affils_df=bad_covid_mort.merge(affils_df, on='Fips', how='left')
 
 sns.scatterplot(data=mort_affils_df, x='Cases_Per_Pop',y='Mortality', hue='Affiliation')
 plt.title('High Mortality Counties by Affiliation')
+plt.xlabel('Percentage of Population with COVID')
+plt.ylabel('Mortality Rate')
 if __name__ == "__main__":
     plt.show() # plot 3 - good mix of both D and R 
 
