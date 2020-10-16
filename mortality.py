@@ -32,10 +32,11 @@ cursor.execute(mort_query)
 mort=result(cursor)
 
 mort_df=DataFrame(mort, columns=['Fips','County','State','Total_Cases','Total_Deaths','Mortality'])
-sns.scatterplot(data=mort_df, x='Total_Cases', y='Mortality') 
-plt.title('Cases and Mortality Rates')
+sns.scatterplot(data=mort_df, x='Total_Cases', y=mort_df['Mortality']*100) 
+plt.suptitle('Cases and Mortality Rates', fontsize=12)
+plt.title('A Handful of Counties Have Excessively High Mortality Rates for the Amount of COVID Cases', fontsize=8)
 plt.xlabel('Total Cases')
-plt.ylabel('Mortality Rate')
+plt.ylabel('Mortality Rate (%)')
 if __name__ == "__main__":
     plt.show() # plot 1 
 
@@ -71,10 +72,11 @@ mort_outliers=result(cursor)
 mort_outliers_df=DataFrame(mort_outliers, columns=['Fips','County','State','Mortality','Cases','Deaths','Population','Cases_Per_Pop'])
 sort_mo_df=mort_outliers_df.sort_values(by=['Cases_Per_Pop','Mortality'], ascending=False)
 
-sns.scatterplot(data=sort_mo_df, x='Cases_Per_Pop', y='Mortality') 
-plt.title('Percent Population with COVID and Mortality Rates')
-plt.xlabel('Percent of Population with COVID')
-plt.ylabel('Mortality Rate')
+sns.scatterplot(x=sort_mo_df['Cases_Per_Pop']*100, y=sort_mo_df['Mortality']*100) 
+plt.suptitle('Percent of Population with COVID and Mortality Rates', fontsize=12)
+plt.title('Many Counties Have Higher than Average Mortality Rates, Even Given Large Population Infection Rates', fontsize=8)
+plt.xlabel('Percent of Population with COVID (%)')
+plt.ylabel('Mortality Rate (%)')
 if __name__ == "__main__":
     plt.show() # plot 2 
 
@@ -98,12 +100,13 @@ affils_df=DataFrame(affils, columns=['Fips','Affiliation'])
 
 mort_affils_df=bad_covid_mort.merge(affils_df, on='Fips', how='left')
 
-sns.scatterplot(data=mort_affils_df, x='Cases_Per_Pop',y='Mortality', hue='Affiliation')
-plt.title('High Mortality Counties by Affiliation')
-plt.xlabel('Percentage of Population with COVID')
-plt.ylabel('Mortality Rate')
+sns.scatterplot(x=mort_affils_df['Cases_Per_Pop']*100,y=mort_affils_df['Mortality']*100, hue=mort_affils_df['Affiliation'])
+plt.suptitle('High Mortality Counties by Affiliation', fontsize=12)
+plt.title('Both Democratic and Republican Counties Are Among the Outliers with High Cases and Mortality Rates', fontsize=8)
+plt.xlabel('Percentage of Population with COVID (%)')
+plt.ylabel('Mortality Rate (%)')
 if __name__ == "__main__":
-    plt.show() # plot 3 - good mix of both D and R 
+    plt.show() # plot 3 
 
 cursor.close()
 connection.close() 

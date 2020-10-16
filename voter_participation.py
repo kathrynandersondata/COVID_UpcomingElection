@@ -46,13 +46,11 @@ swings_df=swings16_df.merge(swings12_df, on='State', how='outer')
 
 # SWING STATES: ANALYZING CASE RATES 
 
-# Scatterplot of swing states vs total states
-
-agg_covid_query=('select state, sum(cases) as cases, sum(deaths) as deaths from covid_cases '
-    ' group by state order by sum(cases) desc;')
+agg_covid_query=('select county, state, max(cases) as cases, max(deaths) as deaths from covid_cases '
+    ' group by county, state order by max(cases) desc;')
 cursor.execute(agg_covid_query)
 agg_covid=result(cursor)
-agg_covid_df=DataFrame(agg_covid, columns=['State','Cases','Deaths'])
+agg_covid_df=DataFrame(agg_covid, columns=['County','State','Cases','Deaths'])
 
 def create_swings(df, col):
     l=[]
@@ -71,23 +69,25 @@ states={'AL':'Alabama','AK':'Alaska','AZ':'Arizona', 'AR':'Arkansas','CA':'Calif
 'UT':'Utah','VT':'Vermont','VA':'Virginia','WA':'Washington','WV':'West Virginia',
 'WI':'Wisconsin','WY':'Wyoming'}
 swings=[states[state] for state in swings_list]
-swing_col_query=(f'select state, case when state in {tuple(swings)} then "S" else "N" end as swing from covid_cases group by state;')
+swing_col_query=(f'select county, state, case when state in {tuple(swings)} then "S" else "N" end as swing from covid_cases group by county, state;')
 cursor.execute(swing_col_query)
 states_swings=result(cursor)
-states_swings_df=DataFrame(states_swings, columns=['State','Status'])
+states_swings_df=DataFrame(states_swings, columns=['County', 'State','Status'])
 
-swing_cases_df=agg_covid_df.merge(states_swings_df, on='State', how='left')
+swing_cases_df=agg_covid_df.merge(states_swings_df, on=['County', 'State'], how='left')
 
 if __name__ == "__main__":
-    sns.scatterplot(x=swing_cases_df['Cases'].astype(float), y=swing_cases_df['Deaths'].astype(float), hue=swing_cases_df['Status'])
-    plt.title('Cases and Deaths for Swing and Non-Swing States')
+    sns.histplot(x=swing_cases_df['Cases'].astype(float), y=swing_cases_df['Deaths'].astype(float), hue=swing_cases_df['Status'],
+    bins=250)
+    plt.suptitle('Cases and Deaths for Swing and Non-Swing States', fontsize=12)
+    plt.title('Most Swing State Counties Are Not Among Those With The Highest Levels of Cases and Deaths', fontsize=8)
     plt.xlabel('Cases')
     plt.ylabel('Deaths')
+    plt.xlim(0,40000)
+    plt.ylim(0,3200)
     plt.show() # plot 1 
-    
-impacted_states=(swing_cases_df.sort_values(by=['Deaths', 'Status'])) # returns PA, MI, FL
 
-# Time series of swing states cases versus national
+# PERCENT OF POPULATION INFECTED OVER TIME 
 
 cases_over_time_query=('select date, state, sum(cases) as cases, sum(deaths) as deaths from covid_cases group by date, state;')
 cursor.execute(cases_over_time_query)
@@ -103,18 +103,24 @@ cases_pop_df=cases_state_df.merge(pop_df, how='left', on='State')
 cases_pop_df['Cases_Per_Pop']=cases_pop_df['Cases']/cases_pop_df['Population']
 
 if __name__ == "__main__":
-    sns.lineplot(data=cases_state_df, x='Date',y='Cases',style='Status', ci=None)
-    plt.title('Cases Over Time for Swing and Non-Swing States')
+    sns.lineplot(x=cases_pop_df['Date'],y=cases_pop_df['Cases_Per_Pop']*100,style=cases_pop_df['Status'], ci=None)
+    plt.suptitle('Percent of Population Infected Over Time for Swing and Non-Swing States', fontsize=12)
+    plt.title('Lately, Swing States Have Had a Lower Percentage of the Population Infected with COVID', fontsize=8)
     plt.xlabel('Date', fontsize=10)
-    plt.ylabel('Cases')
+    plt.ylabel('Percent of Population with COVID (%)')
     plt.show() # plot 2 
 
+# SWING STATES: CASES AND DEATHS OVER TIME BY STATE 
+
+swings_cases=cases_pop_df[cases_pop_df['Status']=="S"]
+
 if __name__ == "__main__":
-    sns.lineplot(data=cases_pop_df, x='Date',y='Cases_Per_Pop',style='Status', ci=None)
-    plt.title('Percent of Population Infected Over Time for Swing and Non-Swing States')
+    sns.lineplot(data=swings_cases, x='Date',y=swings_cases['Cases_Per_Pop']*100, hue='State', ci=None)
+    plt.suptitle('Cases As Percent of the Population Over Time in Swing States', fontsize=12)
+    plt.title('Many Swing States, Most Notably Florida, Maine, and Pennsylvania, Are Experiencing an Uptick in Cases', fontsize=8)
     plt.xlabel('Date', fontsize=10)
-    plt.ylabel('Percent of Population with COVID')
-    plt.show() # plot 3 
+    plt.ylabel('Cases as a Percent of the Population (%)')
+    plt.show() # plot 3
 
 # SWING STATES: VOTER PARTICIPATION 
 
@@ -129,11 +135,12 @@ participation_df=DataFrame(participation, columns=['State','Votes','Population',
 participation_swings_df=participation_df.merge(swing_cases_df, on='State', how='left')
 
 if __name__ == "__main__":
-    sns.displot(data=participation_swings_df,x='Cases',y='Percent_Voters',hue='Status')
-    plt.title('Percentage of Population that Votes - Swing and Non-Swing States', fontsize=12)
+    sns.scatterplot(data=participation_swings_df,x='Cases',y=participation_swings_df['Percent_Voters']*100,hue='Status')
+    plt.title('The Percentage of the Population that Votes is Higher in Swing States', fontsize=8)
+    plt.suptitle('Percentage of Population that Votes - Swing and Non-Swing States', fontsize=12)
     plt.xlabel('Cases')
-    plt.ylabel('Percent of Total Population that Voted in 2016 Election')
-    plt.show() #  plot 4 - swing states have higher percentages of voters
+    plt.ylabel('Percent of Total Population that Voted in 2016 Election (%)')
+    plt.show() #  plot 4 
 
 cursor.close()
 connection.close() 

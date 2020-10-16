@@ -34,15 +34,17 @@ Thesis 2: The extent to which COVID has impacted swing states will impact the wa
 
     In voter_participation.py, I identified which states, based on the 2016 presidential election, were swing states. 
     
-    I then wanted to see how these states were performing amidst the pandemic. I noticed three states in particular had a disproportionately high number of deaths: Pennsylvania, Michigan, and Florida. My hypothesis is that health issues will be at the forefront this year and is likely to persuade voters to vote for a Democratic candidate. 
+    I then wanted to see how these states were performing amidst the pandemic. Overall, swing states have lower cases for population size. However, I noticed an uptick in cases (accounting for population size) in many swing states, particularly Florida, Pennsylvania, and Michigan. My hypothesis is that health issues will be at the forefront this year and is likely to persuade voters in these states to vote for a Democratic candidate.
 
     Graphs: 
     
         1. Cases and Deaths for Swing and Non-Swing States
 
-        2. Cases Over Time for Swing and Non-Swing States
+        2. Percent of Population Infected Over Time for Swing and Non-Swing States
 
-        3. Percent of Population Infected Over Time for Swing and Non-Swing States
+        3. Cases As Percent of the Population Over Time in Swing States
+
+        4. Percentage of Population that Votes - Swing and Non-Swing States
 
 Smaller Data Explorations:
 
