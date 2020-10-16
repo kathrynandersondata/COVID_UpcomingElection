@@ -16,17 +16,19 @@ Thesis 1: The political party associated with a county is strongly correlated wi
 
     In politics.py, I explored my first theory: There is a correlation between a county's political affiliation and the extent to which it is devastated by COVID-19. I found a strong correlation amongst Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense.
 
-    I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. 
+    I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. Furthermore, Republican deaths are on the rise, as Democratic and swing states begin to flatten. 
 
     Graphs: 
 
         1. Cases and Deaths by Affiliation
 
-        2. Cases and Mortality by Affiliation
+        2. Cases and Mortality Rate by Affiliation
 
         3. Population and Cases by Affiliation
 
-        4. Percent Cases by Affiliation Over Time
+        4. Weekly New Cases Over Time by Affiliation
+
+        5. Deaths As A Percentage of Population Over Time by Political Affiliation
 
 Thesis 2: The extent to which COVID has impacted swing states will impact the way they vote in the upcoming presidential election.
 

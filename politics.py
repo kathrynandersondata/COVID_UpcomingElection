@@ -1,5 +1,6 @@
 from main import * 
 from demographics import demo_cases_query
+from voter_participation import * 
 
 connection = mysql.connector.connect(user='root', password='dataadmin',
                               host='localhost', database='covidstocks')
@@ -29,11 +30,13 @@ cursor.execute(affiliation_query)
 affiliation=result(cursor)
 affiliation_df=DataFrame(affiliation, columns = ['fips','cases','deaths','affiliation'])
 
-p4=sns.lmplot(data=affiliation_df, x='cases', y='deaths', hue='affiliation')
-plt.title('Cases and Deaths by Affiliation')
+p4=sns.scatterplot(data=affiliation_df, x='cases', y='deaths', hue='affiliation')
+plt.title('Many Democratic Counties Have Elevated Levels COVID Cases and Deaths', fontsize=8)
+plt.suptitle('Cases and Deaths by Affiliation', fontsize=12)
 plt.xlabel('Cases')
 plt.ylabel('Deaths')
-p4.fig.set_size_inches(8,8)
+plt.xlim(0,30000)
+plt.ylim(0,2000)
 if __name__ == "__main__":
     plt.show() # plot 1 
 
@@ -71,12 +74,13 @@ dem_mortality=('select avg(mortality) from affil_mortality'
 cursor.execute(dem_mortality)
 dem_mort=result(cursor) # 3.0%
 
-p5=sns.displot(data=affil_mort_df, x='Cases', y='Mortality', hue='Affiliation', kind='kde', fill=True)
-plt.title('Cases and Mortality by Affiliation')
-plt.xlim(0,30000)
-plt.ylim(0,0.10)
+p5=sns.displot(data=affil_mort_df, x='Cases', y=affil_mort_df['Mortality']*100, hue='Affiliation', kind='kde', fill=True)
+plt.suptitle('Many Democratic Counties Have Higher Case Levels, but Many Republican Counties Have Higher Mortality Rates', fontsize=8)
+plt.title('Cases and Mortality Rate by Affiliation', fontsize=12)
+plt.xlim(0,20000)
+plt.ylim(0,10)
 plt.xlabel('Cases')
-plt.ylabel('Mortality Rate')
+plt.ylabel('Mortality Rate: Deaths Per Cases (%)')
 p5.fig.set_size_inches(8,8)
 if __name__ == "__main__":
     plt.show() # plot 2 
@@ -92,7 +96,8 @@ pop_cases=result(cursor)
 pop_cases_df=DataFrame(pop_cases, columns=['Fips','Cases','Deaths','Population','Affiliation'])
 
 p6=sns.lmplot(data=pop_cases_df, x='Population', y='Cases', hue='Affiliation')
-plt.title('Population and Cases by Affiliation')
+plt.suptitle('The Strong Correlation Between Population and Cases Explains the Strong Correlation Between Democratic Affilition and Cases', fontsize=8)
+plt.title('Population and Cases by Affiliation', fontsize=12)
 plt.xlabel('Population (Millions)')
 plt.ylabel('Cases')
 p6.fig.set_size_inches(8,8)
@@ -113,60 +118,78 @@ cases_per_pop=result(cursor)
 cases_per_pop_df=DataFrame(cases_per_pop, columns=['Affiliation', 'Total_Cases','Total_Deaths','Total_Population','Avg_Cases_Per_Pop'])
 # returns 2.5% cases/population for Democrats, 2.0% cases/population for Republicans 
 
-# PLOTTING NEW CASES OVER TIME BY PARTY
+# PLOTTING WEEKLY NEW CASES OVER TIME BY PARTY
 
-new_cases_party_query=('create temporary table cases_by_party' 
-    ' select date, case when dem_votes16>rep_votes16 then "D" else "R" end as affiliation,' 
-    ' sum(cases) as total_cases, sum(deaths) as total_deaths' 
-    ' from covid_cases' 
-    ' join politics on politics.fips=covid_cases.fips' 
-    ' group by date, affiliation' 
-    ' order by date;')
-cursor.execute(new_cases_party_query)
-new_cases_party_query2=('select * from cases_by_party;')
-cursor.execute(new_cases_party_query2)
-new_cases_party=result(cursor)
-new_cases_party_df=DataFrame(new_cases_party, columns=['Date','Affiliation','Total_Cases','Total_Deaths'])
+temp1_query=('create temporary table temp1'
+' select date, case when dem_votes16>rep_votes16 then "D" else "R" end as affiliation,' 
+' sum(cases) as total_cases, sum(deaths) as total_deaths' 
+' from covid_cases'
+' join politics on politics.fips=covid_cases.fips'
+' group by date, affiliation' 
+' order by date;')
+cursor.execute(temp1_query)
 
-# democrat df 
-dem_newcases_query=('select * from cases_by_party where affiliation="D";')
-cursor.execute(dem_newcases_query)
-dem_newcases=result(cursor)
-dem_newcases_df=DataFrame(dem_newcases, columns=['Date','Affiliation','Total_Cases','Total_Deaths'])
-dem_newcases_df['New_Cases'] = dem_newcases_df.Total_Cases.diff()
-dem_newcases_df['New_Deaths'] = dem_newcases_df.Total_Deaths.diff()
+temp2_query=('create temporary table temp2'
+' select week(date) as week_num, affiliation, sum(total_cases) as total_cases, sum(total_deaths) as total_deaths' 
+' from temp1' 
+' group by week(date), affiliation;')
+cursor.execute(temp2_query)
 
-# republican df 
-rep_newcases_query=('select * from cases_by_party where affiliation="R";')
-cursor.execute(rep_newcases_query)
-rep_newcases=result(cursor)
-rep_newcases_df=DataFrame(rep_newcases, columns=['Date','Affiliation','Total_Cases','Total_Deaths'])
-rep_newcases_df['New_Cases'] = rep_newcases_df.Total_Cases.diff()
-rep_newcases_df['New_Deaths'] = rep_newcases_df.Total_Deaths.diff()
+weekly_cases_query=('select MAKEDATE(2020, week_num*7-1) as date, affiliation, total_cases, total_deaths from temp2;')
+cursor.execute(weekly_cases_query)
+weekly_cases=result(cursor)
+weekly_cases_df=DataFrame(weekly_cases, columns=['Date','Affiliation','Cases','Deaths'])
 
-# combined df 
-combined_newcases=DataFrame(dem_newcases_df['Date'], columns=['Date'])
-combined_newcases['Dem_Cases'] = dem_newcases_df['New_Cases']
-combined_newcases['Dem_Deaths']=dem_newcases_df['New_Deaths']
+weekly_reps=weekly_cases_df[weekly_cases_df['Affiliation']=='R']
+weekly_dems=weekly_cases_df[weekly_cases_df['Affiliation']=='D']
 
-newcases=combined_newcases.merge(rep_newcases_df, on='Date', how='left')
-newcases_df=newcases.drop(columns=['Affiliation','Total_Cases','Total_Deaths'])
-newcases_df=newcases_df.rename(columns={'New_Cases':'Rep_Cases', 'New_Deaths':'Rep_Deaths'})
+weekly_reps['NewCases_Reps']=weekly_reps['Cases'].diff().astype(float)
+weekly_dems['NewCases_Dems']=weekly_dems['Cases'].diff().astype(float)
 
-newcases_df['Dem_Cases']=newcases_df['Dem_Cases'].astype(float)
-newcases_df['Dem_Deaths']=newcases_df['Dem_Deaths'].astype(float)
-newcases_df['Rep_Cases']=newcases_df['Rep_Cases'].astype(float)
-newcases_df['Rep_Deaths']=newcases_df['Rep_Deaths'].astype(float)
+weekly_df=weekly_reps.merge(weekly_dems, on='Date', how='left').drop([36])
 
-newcases_df['Perc_Dem_Cases']=newcases_df['Dem_Cases']/(newcases_df['Rep_Cases']+newcases_df['Dem_Cases'])
-newcases_df['Perc_Rep_Cases']=newcases_df['Rep_Cases']/(newcases_df['Rep_Cases']+newcases_df['Dem_Cases'])
-
-newcases_df.plot(x="Date", y=["Perc_Dem_Cases", "Perc_Rep_Cases"], kind="line", ylim=[0,1], figsize=(8,8))
-plt.title('Percent Cases by Affiliation Over Time')
-plt.xlabel('Date')
-plt.ylabel('Percent of New COVID Cases')
 if __name__ == "__main__":
-    plt.show() # plot 4 
+    weekly_df.plot(x="Date", y=['NewCases_Reps','NewCases_Dems'], kind="line", figsize=(8,5.5))  
+    plt.suptitle('Weekly New Cases Over Time by Affiliation', fontsize=12)
+    plt.title('Republican New Cases Overtake Democratic New Cases As Reopening Begins Around the Country', fontsize=8)
+    plt.xlabel('Date')
+    plt.ylabel('Weekly New Cases (Millions)')
+    plt.show() # plot 4
+
+# DEATHS AS PERCENTAGE OF POPULATION BY AFFILIATION
+
+deaths_query=('select date, state, sum(cases) as cases, sum(deaths) as deaths,'
+    ' case'
+        ' when sum(dem_votes16)>sum(rep_votes16) then "D"'
+        ' else "R"'
+    ' end as affiliation'
+    ' from covid_cases'
+    ' join politics on politics.fips=covid_cases.fips'
+    ' group by date, covid_cases.state' 
+    ' order by date;')
+cursor.execute(deaths_query)
+deaths=result(cursor)
+deaths_df=DataFrame(deaths, columns=['Date','State','#Cases','#Deaths','Affiliation'])
+
+deaths_affil_df=deaths_df.merge(swing_cases_df, on='State', how='left').drop(columns=['Cases','Deaths'])
+deaths_affil_df['Affil_Status']=deaths_affil_df['Status'][deaths_affil_df['Status']=='S']
+deaths_affil_df["Affil_Status"].fillna(deaths_affil_df['Affiliation'], inplace = True) 
+
+state_pop_query=('select state, sum(population) from demographics group by state;')
+cursor.execute(state_pop_query)
+state_pops=result(cursor)
+state_pop_df=DataFrame(state_pops, columns=['State','Population'])
+
+death_pop_df=deaths_affil_df.merge(state_pop_df, on='State', how='left')
+death_pop_df['Deaths_Per_Pop']=(death_pop_df['#Deaths']/death_pop_df['Population']*100).astype(float)
+
+if __name__ == "__main__":
+    sns.lineplot(data=death_pop_df, x='Date',y='Deaths_Per_Pop', hue='Affil_Status', ci=None)
+    plt.title('Republican Deaths on the Rise as Swing State and Democratic Deaths Taper', fontsize=8)
+    plt.suptitle('Deaths As A Percentage of Population Over Time by Political Affiliation', fontsize=12)
+    plt.xlabel('Date')
+    plt.ylabel('Percentage of the Population that Died due to COVID (%)')
+    plt.show() # plot 5
 
 cursor.close()
 connection.close() 

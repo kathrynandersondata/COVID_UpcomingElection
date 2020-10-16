@@ -10,6 +10,7 @@ import pandas
 import matplotlib.pyplot as plt 
 import numpy as np 
 import csv 
+import math 
 
 # DATA SOURCE 1: STOCK PRICES FROM YAHOO 
 
