@@ -83,7 +83,7 @@ if __name__ == "__main__":
     plt.title('Most Swing State Counties Are Not Among Those With The Highest Levels of Cases and Deaths', fontsize=8)
     plt.xlabel('Cases')
     plt.ylabel('Deaths')
-    plt.xlim(0,40000)
+    plt.xlim(0,100000)
     plt.ylim(0,3200)
     plt.show() # plot 1 
 

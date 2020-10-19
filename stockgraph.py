@@ -15,7 +15,7 @@ cursor.execute(correl_query)
 daily_correl=result(cursor)
 daily_correl_df=DataFrame(daily_correl, columns=['Date','Cases','Deaths','S&P500'])
 daily_correl_df['NewCases']=daily_correl_df['Cases'].astype('float').diff()
-daily_correl_df['NewCases'][daily_correl_df['NewCases']<0]=0
+daily_correl_df['NewCases'][daily_correl_df['NewCases']<0]=np.NaN
 
 # CREATE COMBO CHART 
 fig, ax1 = plt.subplots(figsize=(10,6))
@@ -32,7 +32,6 @@ color = 'purple'
 ax2.set_ylabel('Share of S&P500 ($) (purple)', fontsize=16)
 ax2 = sns.lineplot(x='Date', y='S&P500', data = daily_correl_df.dropna(), sort=False, color=color)
 ax2.tick_params(axis='y', color=color)
-#plt.ylim(reversed(plt.ylim()))
 plt.show()
 
 

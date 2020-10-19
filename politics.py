@@ -130,7 +130,7 @@ temp1_query=('create temporary table temp1'
 cursor.execute(temp1_query)
 
 temp2_query=('create temporary table temp2'
-' select week(date) as week_num, affiliation, sum(total_cases) as total_cases, sum(total_deaths) as total_deaths' 
+' select week(date) as week_num, affiliation, max(total_cases) as total_cases, max(total_deaths) as total_deaths' 
 ' from temp1' 
 ' group by week(date), affiliation;')
 cursor.execute(temp2_query)
@@ -153,7 +153,7 @@ if __name__ == "__main__":
     plt.suptitle('Weekly New Cases Over Time by Affiliation', fontsize=12)
     plt.title('Republican New Cases Overtake Democratic New Cases As Reopening Begins Around the Country', fontsize=8)
     plt.xlabel('Date')
-    plt.ylabel('Weekly New Cases (Millions)')
+    plt.ylabel('Weekly New Cases')
     plt.show() # plot 4
 
 # DEATHS AS PERCENTAGE OF POPULATION BY AFFILIATION
