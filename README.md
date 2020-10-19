@@ -35,7 +35,7 @@ I wanted to see if there were any changes to this trend as time went on, specifi
 <div style="text-align: center">
     <img alt="politics_graph1" src="https://user-images.githubusercontent.com/70925521/96487612-1e773080-120b-11eb-8798-7bcea85b02c5.png"/>
     <img alt="politics_graph2" src="https://user-images.githubusercontent.com/70925521/96490603-0e615000-120f-11eb-90f0-3082010d3403.png" />
-    <img alt="politics_graph3" src="https://user-images.githubusercontent.com/70925521/96487638-2040f400-120b-11eb-88c0-6d1f6d28ddc6.png" />
+    <img alt="politics_graph3" src="https://user-images.githubusercontent.com/70925521/96514243-5ee9a500-1231-11eb-9406-04ab5aae933c.png" />
     <img alt="politics_graph4" src="https://user-images.githubusercontent.com/70925521/96487656-21722100-120b-11eb-8fcd-9ef560ab3280.png" />
 
 </div>
@@ -51,7 +51,7 @@ I then wanted to see how these states were performing amidst the pandemic. Overa
 **Graphs:** 
 
 <div style="text-align: center">
-    <img alt="swing_graph1" src="https://user-images.githubusercontent.com/70925521/96487731-26cf6b80-120b-11eb-9e42-34ab913c6935.png"/>
+    <img alt="swing_graph1" src="https://user-images.githubusercontent.com/70925521/96514232-5beeb480-1231-11eb-8a5a-d5593f8a8f81.png"/>
     <img alt="swing_graph2" src="https://user-images.githubusercontent.com/70925521/96487765-2931c580-120b-11eb-8de3-346ffb15bed2.png" />
     <img alt="swing_graph3" src="https://user-images.githubusercontent.com/70925521/96487786-2a62f280-120b-11eb-8341-bd92a35ebeee.png" />
 
@@ -78,7 +78,7 @@ In stockgraph.py, I analyzed the correlation between the stock market and the nu
 **Graphs:** 
 
 <div style="text-align: center">
-    <img alt="stocks_graph1" src="https://user-images.githubusercontent.com/70925521/96489888-0e148500-120e-11eb-9b57-a8d698e6a33e.png"/>
+    <img alt="stocks_graph1" src="https://user-images.githubusercontent.com/70925521/96514263-6610b300-1231-11eb-8c46-761a479c257c.png"/>
 
 </div>
 
