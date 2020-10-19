@@ -2,6 +2,14 @@
 I analyzed the correlation between COVID cases and deaths in the United States and the political party affiliation of these hotspots.
 
 ---
+## Table of Contents
+
+1. [Data Sources](#data-sources)
+2. [Thesis 1](#thesis-1-the-political-party-associated-with-a-county-is-strongly-correlated-with-the-extent-of-the-covid-outbreak-in-that-county)
+3. [Thesis 2](#thesis-2-the-extent-to-which-covid-has-impacted-swing-states-will-impact-the-way-they-vote-in-the-upcoming-presidential-election)
+4. [Smaller Data Explorations](#smaller-data-explorations)
+
+---
 ## Data Sources: 
 
 In main.py, I use CSV reader to import three unrelated data files from Kaggle.com. 
