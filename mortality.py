@@ -11,7 +11,7 @@ cursor.execute(nyc_update_query) # adds NYC fips
 remove_unknown_query=('delete from covid_cases where county="Unknown";')
 cursor.execute(remove_unknown_query) # removes unknowns 
 
-# FINDING AVERAGE MORTALITY RATE FOR THE COUNTRY --> 2.11%
+# FINDING AVERAGE AND TOTAL MORTALITY RATES FOR THE COUNTRY --> 2.1% average, 2.8% country-wide rate 
 
 avg_mort_create=('create temporary table avg_mortality ' 
     ' select fips, county, state, max(cases) as total_cases, max(deaths) as total_deaths, '
@@ -23,7 +23,11 @@ cursor.execute(avg_mort_create)
 
 avg_mort_query=('select avg(mortality) from avg_mortality;')
 cursor.execute(avg_mort_query)
-avg_mort=result(cursor) 
+avg_mort=result(cursor) # 2.1%
+
+total_mort_query=('select sum(total_deaths)/sum(total_cases) as mortality from avg_mortality;')
+cursor.execute(total_mort_query)
+total_mort=result(cursor) # 2.8% 
 
 # GRAPHING MORTALITY RATES 
 
@@ -44,7 +48,7 @@ if __name__ == "__main__":
 
 mort15_query=('select max(total_cases) from avg_mortality where mortality>0.15;')
 cursor.execute(mort15_query)
-mort15=result(cursor) # returns 431 
+mort15=result(cursor) # returns 431 cases 
 
 mort15_counties=('select avg_mortality.county as county, avg_mortality.state as state, '
     ' mortality, population from avg_mortality '

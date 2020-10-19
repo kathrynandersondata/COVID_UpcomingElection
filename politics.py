@@ -40,7 +40,7 @@ plt.ylim(0,2000)
 if __name__ == "__main__":
     plt.show() # plot 1 
 
-# FINDING CORRELATION BY PARTY 
+# FINDING CORRELATION OF CASES AND DEATHS BY PARTY 
 
 rep_query=('select * from affiliations where affiliation="Republican";')
 cursor.execute(rep_query)
@@ -52,8 +52,8 @@ cursor.execute(dem_query)
 dems=result(cursor)
 dems_df=DataFrame(dems,columns = ['fips','cases','deaths','affiliation'])
 
-rep_correl=np.corrcoef(reps_df.cases,reps_df.deaths) #0.899
-dem_correl=np.corrcoef(dems_df.cases, dems_df.deaths) #0.879
+rep_correl=np.corrcoef(reps_df.cases,reps_df.deaths) #0.90
+dem_correl=np.corrcoef(dems_df.cases, dems_df.deaths) #0.88
 
 # FINDING AVERAGE MORTALITY RATE BY PARTY
 

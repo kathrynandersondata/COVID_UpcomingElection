@@ -26,7 +26,6 @@ if __name__ == "__main__":
     p.map_diag(sns.histplot, kde=True)
     p.fig.set_size_inches(15,8)
     p.fig.suptitle('Various Factor Influences on COVID Cases and Deaths', fontsize=12)
-    p.fig.suptitle('Population and Cases Have the Highest Correlation of the Demographic Factors', fontsize=8)
     plt.show() # plot 1 
 
 correl=pearsonr(demo_cases_df.Population, demo_cases_df.Cases) # returns 0.94 
