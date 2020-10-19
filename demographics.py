@@ -25,7 +25,8 @@ if __name__ == "__main__":
     p.map_lower(sns.scatterplot)
     p.map_diag(sns.histplot, kde=True)
     p.fig.set_size_inches(15,8)
-    p.fig.suptitle('Various Factor Influences on COVID Cases and Deaths')
+    p.fig.suptitle('Various Factor Influences on COVID Cases and Deaths', fontsize=12)
+    p.fig.suptitle('Population and Cases Have the Highest Correlation of the Demographic Factors', fontsize=8)
     plt.show() # plot 1 
 
 correl=pearsonr(demo_cases_df.Population, demo_cases_df.Cases) # returns 0.94 
@@ -40,9 +41,10 @@ first_date_df=DataFrame(first_date, columns=['Date','Fips','County','State','Cas
 
 if __name__ == "__main__":
     p2=sns.displot(data=first_date_df, x='Date', y='Cases', kind='hist')
-    plt.title('First Instance of COVID and Effects on Total Cases')
+    plt.title('The Counties That Experienced the Worst COVID Cases Saw Their First Case in Early March and April', fontsize=8)
+    plt.suptitle('First Instance of COVID and Effects on Total Cases', fontsize=12)
     plt.ylim(0, 1000000)
-    p2.fig.set_size_inches(7,7)
+    p2.fig.set_size_inches(8,8)
     plt.xlabel('Date of First COVID Case')
     plt.ylabel('Total COVID Cases (in Millions)')
     plt.show() # plot 2 

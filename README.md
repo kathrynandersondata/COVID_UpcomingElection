@@ -56,13 +56,15 @@ Smaller Data Explorations:
 
             2. First Instance of COVID and Effects on Total Cases
 
-    In stockgraph.py, I analyzed the correlation between the stock market and the number of new COVID cases. 
+    In stockgraph.py, I analyzed the correlation between the stock market and the number of new COVID cases. As cases go down, the stock market tends to go up. 
 
         Graphs: 
 
             1. COVID-19 Correlation with Stock Market
     
-    In mortality.py, I calculated the average mortality rate across the country and examined to see if there were any outliers. The counties with the highest mortality rates (greater than 15%) had fewer than 500 total cases, and were the counties with comparatively low populations (22,000 average population compared to nationwide average of 101,000). I next looked at counties with high mortality rates and high cases per population, and found Georgia had 6 of these outliers and Texas had four. 
+    In mortality.py, I calculated the average mortality rate across the country and examined to see if there were any outliers. The counties with the highest mortality rates (greater than 15%) had fewer than 500 total cases, and were the counties with comparatively low populations (22,000 average population compared to nationwide average of 101,000). 
+    
+    I then looked at counties with high mortality rates and high cases per population, and found Georgia had 6 of these outliers and Texas had four. 
 
         Graphs: 
         
