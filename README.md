@@ -1,7 +1,7 @@
 # COVID-19 and the Upcoming Election
 I analyzed the correlation between COVID cases and deaths in the United States and the political party affiliation of these hotspots.
 
----
+
 ## Table of Contents
 
 1. [Data Sources](#data-sources)
