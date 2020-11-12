@@ -43,6 +43,7 @@ swings12_df=DataFrame(swings12, columns=['State','Dem_Votes','Rep_Votes','Perc_D
 
 # merging swing state data from each election to one DF 
 swings_df=swings16_df.merge(swings12_df, on='State', how='outer')
+print(swings_df)
 
 # SWING STATES: ANALYZING CASE RATES 
 
@@ -100,12 +101,12 @@ cursor.execute(pop_query)
 pop=result(cursor)
 pop_df=DataFrame(pop, columns=['State','Population'])
 cases_pop_df=cases_state_df.merge(pop_df, how='left', on='State')
-cases_pop_df['Cases_Per_Pop']=cases_pop_df['Cases']/cases_pop_df['Population']
+cases_pop_df['Cases_Per_Pop']=(cases_pop_df['Cases']/cases_pop_df['Population']).astype(float)
 
 if __name__ == "__main__":
     sns.lineplot(x=cases_pop_df['Date'],y=cases_pop_df['Cases_Per_Pop']*100,style=cases_pop_df['Status'], ci=None)
     plt.suptitle('Percent of Population Infected Over Time for Swing and Non-Swing States', fontsize=12)
-    plt.title('Lately, Swing States Have Had a Lower Percentage of the Population Infected with COVID', fontsize=8)
+    plt.title('Lately, Swing States Have Had a Higher Percentage of the Population Infected with COVID', fontsize=8)
     plt.xlabel('Date', fontsize=10)
     plt.ylabel('Percent of Population with COVID (%)')
     plt.show() # plot 2 

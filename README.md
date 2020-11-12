@@ -26,7 +26,7 @@ I cleaned the data in this file as well, adding unique county identifier codes c
 
 ## Thesis 1: The political party associated with a county is strongly correlated with the extent of the COVID outbreak in that county. 
 
-In politics.py, I explored my first theory: There is a correlation between a county's political affiliation and the extent to which it is devastated by COVID-19. I found a strong correlation amongst Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election.
+In politics.py, I explored my first theory: There is a correlation between a county's political affiliation and the extent to which it is devastated by COVID-19. I found a strong correlation amongst Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election. Furthermore, the correlation between population and COVID cases for Republican counties was 0.96, compared to 0.88 for Democratic counties. 
 
 I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. Furthermore, Republican deaths are on the rise, as Democratic and swing states begin to flatten. 
 
@@ -46,13 +46,17 @@ I wanted to see if there were any changes to this trend as time went on, specifi
 
 In voter_participation.py, I identified which states, based on the 2016 presidential election, were swing states. 
 
-I then wanted to see how these states were performing amidst the pandemic. Overall, swing states have lower cases for population size. However, I noticed an uptick in cases (accounting for population size) in many swing states, particularly Florida, Pennsylvania, and Michigan. My hypothesis is that health issues will be at the forefront this year and is likely to persuade voters in these states to vote for a Democratic candidate.
+I then wanted to see how these states were performing amidst the pandemic. In the weeks leading up to the election, swing states had higher cases for population size than non-swing states. 
+
+In particular, I noticed an uptick in cases (accounting for population size) in ______________. My hypothesis is that health issues will be at the forefront of voter concerns this year and is likely to persuade voters in these states to vote for a Democratic candidate.
+
+Following the election, I wanted to see if my hypothesis was correct. Did states struggling admist the pandemic vote Democratic? The weighted average percentage of the population infected with COVID (weighted by population size) in these swing states was 3.62% in counties that voted for Biden, as opposed to 3.16% in counties that voted for Trump. 
 
 **Graphs:** 
 
 <div style="text-align: center">
     <img alt="swing_graph1" src="https://user-images.githubusercontent.com/70925521/96514232-5beeb480-1231-11eb-8a5a-d5593f8a8f81.png"/>
-    <img alt="swing_graph2" src="https://user-images.githubusercontent.com/70925521/96487765-2931c580-120b-11eb-8de3-346ffb15bed2.png" />
+    <img alt="swing_graph2" src="https://user-images.githubusercontent.com/70925521/99010513-182d5900-2518-11eb-81a3-569f80b7a4d0.png" />
     <img alt="swing_graph3" src="https://user-images.githubusercontent.com/70925521/96487786-2a62f280-120b-11eb-8341-bd92a35ebeee.png" />
 
 </div>

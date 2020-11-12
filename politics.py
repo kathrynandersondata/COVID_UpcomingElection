@@ -42,15 +42,19 @@ if __name__ == "__main__":
 
 # FINDING CORRELATION OF CASES AND DEATHS BY PARTY 
 
-rep_query=('select * from affiliations where affiliation="Republican";')
+rep_query=('select affiliations.fips, cases, deaths, affiliation, population from affiliations '
+' join demographics on demographics.fips=affiliations.fips '
+'where affiliation="Republican";')
 cursor.execute(rep_query)
 reps=result(cursor)
-reps_df=DataFrame(reps,columns = ['fips','cases','deaths','affiliation'])
+reps_df=DataFrame(reps,columns = ['fips','cases','deaths','affiliation', 'population'])
 
-dem_query=('select * from affiliations where affiliation="Democrat";')
+dem_query=('select affiliations.fips, cases, deaths, affiliation, population from affiliations'
+' join demographics on demographics.fips=affiliations.fips ' 
+'where affiliation="Democrat";')
 cursor.execute(dem_query)
 dems=result(cursor)
-dems_df=DataFrame(dems,columns = ['fips','cases','deaths','affiliation'])
+dems_df=DataFrame(dems,columns = ['fips','cases','deaths','affiliation', 'population'])
 
 rep_correl=np.corrcoef(reps_df.cases,reps_df.deaths) #0.90
 dem_correl=np.corrcoef(dems_df.cases, dems_df.deaths) #0.88
@@ -104,6 +108,9 @@ p6.fig.set_size_inches(8,8)
 if __name__ == "__main__":
     plt.show() # plot 3 
 
+rep_correl2=np.corrcoef(reps_df.population,reps_df.cases) #0.96
+dem_correl2=np.corrcoef(dems_df.population, dems_df.cases) #0.88 
+
 # finding cases/population by party 
 
 cases_per_pop_query=('create temporary table cases_per_pop' 
@@ -117,6 +124,40 @@ cursor.execute(cases_per_pop_query2)
 cases_per_pop=result(cursor)
 cases_per_pop_df=DataFrame(cases_per_pop, columns=['Affiliation', 'Total_Cases','Total_Deaths','Total_Population','Avg_Cases_Per_Pop'])
 # returns 2.5% cases/population for Democrats, 2.0% cases/population for Republicans 
+
+# PLOTTING DAILY NEW CASES OVER TIME BY PARTY
+
+daily_cases_query=('with cte as( '
+'select date, covid_cases.county, covid_cases.state, ' 
+'case when dem_votes16>rep_votes16 then "D" else "R" end as affiliation, ' 
+'cases, lag(cases,1) over (partition by covid_cases.fips order by date) as cases_yesterday ' 
+'from covid_cases ' 
+'join politics on politics.fips=covid_cases.fips ' 
+'order by date desc) '
+' select date, affiliation, sum(cases) as total_cases, sum(cases_yesterday) as yesterday_cases, ' 
+' sum(cases)-sum(cases_yesterday) as new_cases ' 
+' from cte ' 
+' group by date, affiliation ')
+cursor.execute(daily_cases_query)
+daily_cases=result(cursor)
+daily_cases_df=DataFrame(daily_cases, columns=['Date','Affiliation','Cases','Yesterday_Cases','New_Cases'])
+
+daily_reps=daily_cases_df[daily_cases_df['Affiliation']=='R']
+daily_dems=daily_cases_df[daily_cases_df['Affiliation']=='D']
+
+daily_reps['NewCases_Reps']=daily_reps['New_Cases'].astype(float)
+daily_dems['NewCases_Dems']=daily_dems['New_Cases'].astype(float)
+
+daily_df=daily_reps.merge(daily_dems, on='Date', how='left')
+
+if __name__ == "__main__":
+    daily_df.plot(x="Date", y=['NewCases_Dems','NewCases_Reps'], kind="line", figsize=(8,5.5))  
+    plt.suptitle('Daily New Cases Over Time by Affiliation', fontsize=12)
+    plt.title('Republican New Cases Overtake Democratic New Cases As Reopening Begins Around the Country', fontsize=8)
+    plt.xlabel('Date')
+    plt.ylabel('Daily New Cases')
+    plt.show() # plot 3.5 
+
 
 # PLOTTING WEEKLY NEW CASES OVER TIME BY PARTY
 
