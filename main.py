@@ -84,7 +84,7 @@ def insert_covid_cases (data):
 '''
 insert data into db: 
 bulk_insert(csv_data[1:])
-'''
+''' 
 
 def result(cursor):
     return [list(row) for row in cursor]
@@ -255,6 +255,48 @@ find_KCM=list(result(cursor))  # no match
 # update the table to add fips to New York City 
 nyc_update_query=(f'update covid_cases set fips={find_NYC[0][0]} where county="New York City";')
 cursor.execute(nyc_update_query)
+
+# DATA SOURCE 5: 2020 ELECTION DATA BY COUNTY (CSV FILE)
+
+tables['politics_2020'] = (
+    "CREATE TABLE `politics_2020` ("
+    "  `state` text,"
+    "  `county` text,"
+    "  `candidate` text,"
+    "  `party` text,"
+    "  `total_votes` int,"
+    "  `won` text"
+    ") ENGINE=InnoDB")
+
+def create_politics_2020(dictionary):
+    cursor.execute(dictionary['politics_2020'])
+
+'''
+create_politics_2020(tables)
+'''
+
+politics2020_data=read_csv('president_county_candidate.csv')
+
+def bulk_insert_politics(data):
+    min_index=0
+    max_index=1000
+    while max_index < len(data):
+        insert_politics2020(data[min_index:max_index])
+        min_index += 1001
+        max_index += 1001
+    insert_politics2020(data[min_index:]) #insert the remaining few data points 
+
+def insert_politics2020(data):
+    to_add = ("INSERT INTO politics_2020 "
+               "(state, county, candidate, party, total_votes, won)"
+                " VALUES (%s, %s, %s, %s, %s, %s)")
+    cursor.executemany(to_add, data)
+    connection.commit()
+
+'''
+insert data into db: 
+bulk_insert_politics(politics2020_data[1:]) 
+'''
 
 cursor.close()
 connection.close() 
