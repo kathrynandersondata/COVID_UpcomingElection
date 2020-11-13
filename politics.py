@@ -195,6 +195,7 @@ if __name__ == "__main__":
     plt.title('Republican New Cases Overtake Democratic New Cases As Reopening Begins Around the Country', fontsize=8)
     plt.xlabel('Date')
     plt.ylabel('Weekly New Cases')
+    plt.xlim('2020-02-01','2020-11-06')
     plt.show() # plot 4
 
 # DEATHS AS PERCENTAGE OF POPULATION BY AFFILIATION
@@ -226,7 +227,7 @@ death_pop_df['Deaths_Per_Pop']=(death_pop_df['#Deaths']/death_pop_df['Population
 
 if __name__ == "__main__":
     sns.lineplot(data=death_pop_df, x='Date',y='Deaths_Per_Pop', hue='Affil_Status', ci=None)
-    plt.title('Republican Deaths on the Rise as Swing State and Democratic Deaths Taper', fontsize=8)
+    plt.title('Republican and Swing State Deaths on the Rise as Democratic Deaths Taper', fontsize=8)
     plt.suptitle('Deaths As A Percentage of Population Over Time by Political Affiliation', fontsize=12)
     plt.xlabel('Date')
     plt.ylabel('Percentage of the Population that Died due to COVID (%)')

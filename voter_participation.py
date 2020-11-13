@@ -43,7 +43,6 @@ swings12_df=DataFrame(swings12, columns=['State','Dem_Votes','Rep_Votes','Perc_D
 
 # merging swing state data from each election to one DF 
 swings_df=swings16_df.merge(swings12_df, on='State', how='outer')
-print(swings_df)
 
 # SWING STATES: ANALYZING CASE RATES 
 

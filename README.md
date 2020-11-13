@@ -33,10 +33,10 @@ I wanted to see if there were any changes to this trend as time went on, specifi
 **Graphs:**
 
 <div style="text-align: center">
-    <img alt="politics_graph1" src="https://user-images.githubusercontent.com/70925521/96487612-1e773080-120b-11eb-8798-7bcea85b02c5.png"/>
+    <img alt="politics_graph1" src="https://user-images.githubusercontent.com/70925521/99011694-adc9e800-251a-11eb-8e22-9c9bb9a6720a.png"/>
     <img alt="politics_graph2" src="https://user-images.githubusercontent.com/70925521/96490603-0e615000-120f-11eb-90f0-3082010d3403.png" />
-    <img alt="politics_graph3" src="https://user-images.githubusercontent.com/70925521/96514243-5ee9a500-1231-11eb-9406-04ab5aae933c.png" />
-    <img alt="politics_graph4" src="https://user-images.githubusercontent.com/70925521/96487656-21722100-120b-11eb-8fcd-9ef560ab3280.png" />
+    <img alt="politics_graph3" src="https://user-images.githubusercontent.com/70925521/99011715-b4f0f600-251a-11eb-87d6-d00ce8102acc.png" />
+    <img alt="politics_graph4" src="https://user-images.githubusercontent.com/70925521/99011720-b7ebe680-251a-11eb-8dc9-1bafb57e7936.png" />
 
 </div>
 
@@ -48,7 +48,7 @@ In voter_participation.py, I identified which states, based on the 2016 presiden
 
 I then wanted to see how these states were performing amidst the pandemic. In the weeks leading up to the election, swing states had higher cases for population size than non-swing states. 
 
-In particular, I noticed an uptick in cases (accounting for population size) in ______________. My hypothesis is that health issues will be at the forefront of voter concerns this year and is likely to persuade voters in these states to vote for a Democratic candidate.
+In particular, I noticed an uptick in cases (accounting for population size) in ______________. My hypothesis is that health issues will be at the forefront of voter concernsthis year and is likely to persuade voters in these states to vote for a Democratic candidate.
 
 Following the election, I wanted to see if my hypothesis was correct. Did states struggling admist the pandemic vote Democratic? The weighted average percentage of the population infected with COVID (weighted by population size) in these swing states was 3.62% in counties that voted for Biden, as opposed to 3.16% in counties that voted for Trump. 
 
