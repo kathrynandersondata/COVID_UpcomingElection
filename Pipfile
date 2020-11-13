@@ -12,6 +12,7 @@ mysql-connector-python = "*"
 yahoo-finance = "*"
 yfinance = "*"
 seaborn = "*"
+sklearn = "*"
 
 [requires]
 python_version = "3.8"

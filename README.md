@@ -43,7 +43,9 @@ In politics.py, I explored my first theory: There is a correlation between a cou
 
 I found a strong association between Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election, and the average size of a Democratic county is more than 7 times the size of the average Republican county. However, 82% of counties are Republican.
 
-Furthermore, the correlation between population and number of COVID cases for Republican counties was 0.96, compared to 0.88 for Democratic counties, showing that Republican counties experience more cases when accounting for differences in population size. 
+I decided to run a linear regression analysis using SciKit Learn. I started by removing outliers that would skew the regression results, so limited my population size to under 4 million and my case count to under 100,000. I then assessed the correlation between population size and case count for both Democratic and Republican counties. Unsurprisingly, both experienced an incredibly strong correlation, with Republican counties showing a 0.86 correlation and Democratic counties having a 0.82 correlation. This shows that the relationship is stronger in Republican counties between population size and case counts, while there is slightly more variance in Democratic counties. 
+
+The slope of the best-fit line was slightly different among the populations, with Republican counties at 0.033 and Democratic counties at 0.028. Statistically, this means that for every additional 1,000 people in a county, the county will see an increase of 33 and 28 cases, respectively. 
 
 I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. Furthermore, Republican and swing state deaths are on the rise, as Democratic state deaths begin to flatten. 
 
@@ -51,7 +53,7 @@ I wanted to see if there were any changes to this trend as time went on, specifi
 
 <div style="text-align: center">
     <img alt="politics_graph1" src="https://user-images.githubusercontent.com/70925521/99011694-adc9e800-251a-11eb-8e22-9c9bb9a6720a.png"/>
-    <img alt="politics_graph2" src="https://user-images.githubusercontent.com/70925521/96490603-0e615000-120f-11eb-90f0-3082010d3403.png" />
+    <img alt="politics_graph2" src="https://user-images.githubusercontent.com/70925521/99114098-4b2a2800-25be-11eb-8994-63969170034f.png" />
     <img alt="politics_graph3" src="https://user-images.githubusercontent.com/70925521/99011715-b4f0f600-251a-11eb-87d6-d00ce8102acc.png" />
     <img alt="politics_graph4" src="https://user-images.githubusercontent.com/70925521/99011720-b7ebe680-251a-11eb-8dc9-1bafb57e7936.png" />
 
@@ -75,12 +77,11 @@ On a county level, the weighted average percentage of the population infected wi
 
 On a nationwide level for all states, the difference between infection rates was more pronounced and the the highest parties were <i>reversed</i>: Republican counties had a higher infection rate of 3.75% while Democrat ones had 2.91%. However, this is less significant since COVID case rates are less likely to predict outcomes for states who are historically strong Democratic or Republican counties. 
 
-Out of the 1100 counties in swing states this year, only 19 switched their vote from Republican to Democrat, and 12 switched from Democrat to Republican! Votes for Democrats increased by 6.5 million, however, compared to only 5.5 million for the Republicans. 
+So what ensured the win for Biden: county conversion or increased voter turnout in Hillary's 2016 counties? Out of the 1100 counties in swing states this year, only 19 switched their vote from Republican to Democrat, and 12 switched from Democrat to Republican. However, votes for Democrats increased by 6.5 million, compared to only 5.5 million for the Republicans. Voter turnout reached record high levels across the nation as well, with 16.2 million more citizens casting votes for Biden than Clinton and 11.8 million more votes for Trump. 
 
 **Graphs:** 
 
 <div style="text-align: center">
-    <img alt="swing_graph1" src="https://user-images.githubusercontent.com/70925521/96514232-5beeb480-1231-11eb-8a5a-d5593f8a8f81.png"/>
     <img alt="swing_graph2" src="https://user-images.githubusercontent.com/70925521/99010513-182d5900-2518-11eb-81a3-569f80b7a4d0.png" />
     <img alt="swing_graph3" src="https://user-images.githubusercontent.com/70925521/99027784-0d84bb00-253c-11eb-8616-f0a3e049ad8d.png" />
 

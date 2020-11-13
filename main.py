@@ -253,7 +253,7 @@ cursor.execute(find_KCM_query)
 find_KCM=list(result(cursor))  # no match 
 
 # update the table to add fips to New York City 
-nyc_update_query=(f'update covid_cases set fips={find_NYC[0][0]} where county="New York City";')
+nyc_update_query=(f'update covid_cases set fips={find_NYC[0][0]} where county="New York City"')
 cursor.execute(nyc_update_query)
 
 # DATA SOURCE 5: 2020 ELECTION DATA BY COUNTY (CSV FILE)

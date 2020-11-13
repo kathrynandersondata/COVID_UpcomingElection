@@ -1,6 +1,7 @@
 from main import * 
 from demographics import demo_cases_query
 from voter_participation import * 
+from sklearn.linear_model import LinearRegression
 
 connection = mysql.connector.connect(user='root', password='dataadmin',
                               host='localhost', database='covidstocks')
@@ -131,6 +132,40 @@ if __name__ == "__main__":
 rep_correl2=np.corrcoef(reps_df.population,reps_df.cases) #0.96
 dem_correl2=np.corrcoef(dems_df.population, dems_df.cases) #0.88 
 
+# LUNEAR REGRESSION TEST ON POPULATION AND CASES BY PARTY 
+
+clean_reps_df=reps_df[(reps_df['population']<4000000) & (reps_df['cases']<100000)]
+clean_dems_df=dems_df[(dems_df['population']<4000000) & (dems_df['cases']<100000)]
+
+clean_df=pop_cases_df[(pop_cases_df['Population']<4000000) & (pop_cases_df['Cases']<100000)]
+
+new_plot=sns.lmplot(data=clean_df, x='Population', y='Cases', hue='Affiliation')
+plt.suptitle('The Strong Correlation Between Population and Cases Explains the Strong Correlation Between Democratic Affilition and Cases', fontsize=8)
+plt.title('Population and Cases by Affiliation', fontsize=12)
+plt.xlabel('Population (Millions)')
+plt.ylabel('Cases')
+new_plot.fig.set_size_inches(8,8)
+if __name__ == "__main__":
+    plt.show() # plot 3 
+
+reps_x=clean_reps_df['population'].values.reshape((-1, 1))
+reps_y=clean_reps_df['cases']
+dems_x=clean_dems_df['population'].values.reshape((-1, 1))
+dems_y=clean_dems_df['cases']
+
+reps_model=LinearRegression().fit(reps_x, reps_y)
+dems_model=LinearRegression().fit(dems_x, dems_y)
+
+reps_rsq=reps_model.score(reps_x,reps_y)
+reps_intercept=reps_model.intercept_ 
+reps_slope=reps_model.coef_ 
+
+dems_rsq=dems_model.score(dems_x,dems_y)
+dems_intercept=dems_model.intercept_ 
+dems_slope=dems_model.coef_ 
+
+print(reps_rsq,reps_slope,dems_rsq,dems_slope)
+
 # finding cases/population by party 
 
 cases_per_pop_query=('create temporary table cases_per_pop' 
@@ -143,7 +178,6 @@ cases_per_pop_query2=('select * from cases_per_pop;')
 cursor.execute(cases_per_pop_query2)
 cases_per_pop=result(cursor)
 cases_per_pop_df=DataFrame(cases_per_pop, columns=['Affiliation', 'Total_Cases','Total_Deaths','Total_Population','Avg_Cases_Per_Pop'])
-# returns 2.5% cases/population for Democrats, 2.0% cases/population for Republicans 
 
 # PLOTTING DAILY NEW CASES OVER TIME BY PARTY
 

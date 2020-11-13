@@ -1,5 +1,8 @@
-from main import * 
-from demographics import * 
+import mysql.connector
+from main import result
+from pandas import DataFrame
+import seaborn as sns 
+import matplotlib.pyplot as plt 
 
 connection = mysql.connector.connect(user='root', password='dataadmin',
                               host='localhost', database='covidstocks')
@@ -86,7 +89,7 @@ if __name__ == "__main__":
     plt.show() # plot 1
 
 # VOTER TURNOUT OR CHANGE OF HEART?
-elections_swings_query=('with cte as(' 
+elections_swings_query=('with cte as ( ' 
 ' select county, state, ' 
 ' case when candidate="Joe Biden" then total_votes else 0 end as biden, ' 
 ' case when candidate="Donald Trump" then total_votes else 0 end as trump, ' 
@@ -106,18 +109,24 @@ elections_swings_query=('with cte as('
 '       sum(biden)-max(dem_votes16) as dem_diff, sum(trump)-max(rep_votes16) as rep_diff '
 'from cte ' 
 'join politics on politics.county=cte.county and cte.state_abbrev=politics.state_abbrev ' 
-'group by county, state)'
-' select "t_to_b" as stat, count(*) as count from cte2 where winner16="T" and winner20="B"-- 19 ' 
-' union select "h_to_t", count(*) from cte2 where winner16="H" and winner20="T" -- 12 ' 
-' union select "dem_newvotes", sum(dem_diff) from cte2 ' 
-' union select "rep_newvotes", sum(rep_diff) from cte2 -- 6.4M more D votes, 5.4M more R votes ' 
-' union select "t", count(*) from cte2 where winner16="T" and winner20="T" -- 901 ' 
-' union select "d", count(*) from cte2 where winner16="H" and winner20="B" -- 152 ' 
-)
+'group by county, state) '
+' select * from cte2') 
 cursor.execute(elections_swings_query)
 elections_swings=result(cursor)
-elections_swings_df=DataFrame(elections_swings, columns=['Stat','Report'])
-print(elections_swings_df)
+elections_swings_df=DataFrame(elections_swings, columns=['County','State','Biden','Trump','Clinton','Trump16','Win20','Win16','Dem_Diff','Rep_Diff'])
+
+trump_to_biden=len(elections_swings_df[(elections_swings_df['Win16']=='T') & (elections_swings_df['Win20']=='B')]) 
+clinton_to_trump=len(elections_swings_df[(elections_swings_df['Win16']=='H') & (elections_swings_df['Win20']=='T')]) 
+trump=len(elections_swings_df[(elections_swings_df['Win16']=='T') & (elections_swings_df['Win20']=='T')]) 
+dem=len(elections_swings_df[(elections_swings_df['Win16']=='H') & (elections_swings_df['Win20']=='B')]) 
+new_dem_votes=elections_swings_df['Dem_Diff'].sum()
+new_rep_votes=elections_swings_df['Rep_Diff'].sum()
+
+
+elections_swings_df['Votes16']=(elections_swings_df['Trump16']+elections_swings_df['Clinton']).astype(float)
+elections_swings_df['Votes20']=(elections_swings_df['Trump']+elections_swings_df['Biden']).astype(float)
+elections_swings_df['Trump']=(elections_swings_df['Trump']).astype(float)
+elections_swings_df['Biden']=(elections_swings_df['Biden']).astype(float)
 
 
 cursor.close()
