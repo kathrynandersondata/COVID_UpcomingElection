@@ -28,8 +28,10 @@ I cleaned the data in this file as well, adding unique county identifier codes c
 
 As of November 11, 2020:
 
-    Total Cases: 10,464,484
-    Total Deaths: 240,612
+Total Cases: <strong>10,464,484</strong>
+Total Deaths: <strong>240,612</strong>
+
+The counties with the most cases include Los Angeles (CA), New York (NY), Cook (IL), Miami-Dade (FL), Harris (TX), and Maricopa (AZ), each with more than 170,000 cases. These counties are also the ones experiencing the highest death counts, with the notable addition of Wayne (MI), who ranks 6th for deaths even though they are ranked 25th for case counts. 
 
 I also wanted to explore outliers: counties that either performed very well or very poorly given population size. Since the distribution of COVID cases is not normal, I calculated the percentile for each county and analyzed the counties in the 1st and 99th percentile. 9 counties in Vermont and 6 in Maine qualified to be in the 1st percentile, whereas 8 in North Dakota and 5 in South Dakota had record-high levels of cases given population size in the 99th percentile. 
 
@@ -63,16 +65,22 @@ In voter_participation.py, I identified which states, based on the 2016 presiden
 
 I then wanted to see how these states were performing amidst the pandemic. In the weeks leading up to the election, swing states had higher cases for population size than non-swing states. 
 
-In particular, I noticed an uptick in cases (accounting for population size) in ______________. My hypothesis is that health issues will be at the forefront of voter concernsthis year and is likely to persuade voters in these states to vote for a Democratic candidate.
+In particular, I noticed an uptick in cases (accounting for population size) in Iowa, Wisconsin, and Florida. My hypothesis was that health issues would be at the forefront of voter concerns this year and was likely to persuade voters in these states to vote for a Democratic candidate.
 
-Following the election, I wanted to see if my hypothesis was correct. Did states struggling admist the pandemic vote Democratic? The weighted average percentage of the population infected with COVID (weighted by population size) in these swing states was 3.62% in counties that voted for Biden, as opposed to 3.16% in counties that voted for Trump. 
+Following the election, I wanted to see if my hypothesis was correct. Did states struggling admist the pandemic vote Democratic? 
+
+The third plot shows that 8 of the 13 swing states cast their votes for Biden. 
+
+On a county level, the weighted average percentage of the population infected with COVID (weighted by population size) in these swing states was 3.62% in counties that voted for Biden, as opposed to 3.16% in counties that voted for Trump. As a whole, counties that experienced higher levels voted for Biden, but there were a few exceptions to that rule. 
+
+On a nationwide level for all states, the difference between infection rates was even more pronounced and even reversed: Republican counties had a higher infection rate of 3.75% while Democrat ones had 2.91%. 
 
 **Graphs:** 
 
 <div style="text-align: center">
     <img alt="swing_graph1" src="https://user-images.githubusercontent.com/70925521/96514232-5beeb480-1231-11eb-8a5a-d5593f8a8f81.png"/>
     <img alt="swing_graph2" src="https://user-images.githubusercontent.com/70925521/99010513-182d5900-2518-11eb-81a3-569f80b7a4d0.png" />
-    <img alt="swing_graph3" src="https://user-images.githubusercontent.com/70925521/96487786-2a62f280-120b-11eb-8341-bd92a35ebeee.png" />
+    <img alt="swing_graph3" src="https://user-images.githubusercontent.com/70925521/99027784-0d84bb00-253c-11eb-8616-f0a3e049ad8d.png" />
 
 </div>
 
@@ -112,7 +120,6 @@ I then looked at counties with high mortality rates and high cases per populatio
 
 </div>
 
-In outliers.py, I investigated the possibility that some counties had higher populations but lower cases, but unfortunately only found one outlier: New York, which had a high number of cases and deaths, even for its population. 
 
     
 

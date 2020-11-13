@@ -10,6 +10,17 @@ totals_query='select sum(cases), sum(deaths) from covid_cases where date="2020-1
 cursor.execute(totals_query)
 totals=result(cursor)
 
+# RANKS FOR CASES AND DEATHS 
+ranks_query=('select county, state, max(cases) as cases, max(deaths) as deaths, ' 
+'rank() over (order by max(cases) desc) as rnk ' 
+'from covid_cases ' 
+'group by county, state ' 
+'order by 4 desc ')
+cursor.execute(ranks_query)
+ranks=result(cursor)
+ranks_df=DataFrame(ranks, columns=['County','State','Cases','Deaths','Cases_Rnk'])
+print(ranks_df)
+
 # OUTLIERS 
 outliers_query=('with cte as ( ' 
 ' select covid_cases.fips, covid_cases.county, covid_cases.state, max(cases) as cases, max(population) as pop, ' 
