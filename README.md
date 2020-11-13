@@ -87,6 +87,7 @@ So what ensured the win for Biden: county conversion or increased voter turnout 
 <div style="text-align: center">
     <img alt="swing_graph2" src="https://user-images.githubusercontent.com/70925521/99010513-182d5900-2518-11eb-81a3-569f80b7a4d0.png" />
     <img alt="swing_graph3" src="https://user-images.githubusercontent.com/70925521/99027784-0d84bb00-253c-11eb-8616-f0a3e049ad8d.png" />
+    <img alt="barplot" src="https://user-images.githubusercontent.com/70925521/99127969-9866c380-25d7-11eb-93c3-b3d3ac012698.png" />
 
 </div>
 

@@ -128,6 +128,22 @@ elections_swings_df['Votes20']=(elections_swings_df['Trump']+elections_swings_df
 elections_swings_df['Trump']=(elections_swings_df['Trump']).astype(float)
 elections_swings_df['Biden']=(elections_swings_df['Biden']).astype(float)
 
+clean_elections=elections_swings_df[['State','Biden','Trump','Clinton','Trump16']].groupby(['State'], as_index=False).sum()
+barplot_data=clean_elections.melt('State', var_name='Candidate', value_name='Votes')
+barplot_data['Election']='2016'
+barplot_data['Election'][barplot_data['Candidate']=='Biden']='2020'
+barplot_data['Election'][barplot_data['Candidate']=='Trump']='2020'
+
+if __name__ == "__main__":
+    sns.barplot(x=barplot_data["State"], y=barplot_data['Votes'], hue=barplot_data['Election'])
+    plt.suptitle('Voter Turnout for 2016 and 2020 Elections', fontsize=12)
+    plt.title('Voter Turnout Was Significantly Higher in the 2020 Election, Especially in Texas, Florida, Arizona, and Georgia', fontsize=8)
+    plt.xlabel('State', fontsize=10)
+    plt.ylabel('Votes (millions)')
+    plt.show() # plot 2 
+
+clean_elections['Increase']=clean_elections['Biden']+clean_elections['Trump']-clean_elections['Clinton']-clean_elections['Trump16']
+clean_elections.sort_values(by='Increase', ascending=False)
 
 cursor.close()
 connection.close() 
