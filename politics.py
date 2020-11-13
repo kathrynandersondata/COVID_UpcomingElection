@@ -40,6 +40,26 @@ plt.ylim(0,2000)
 if __name__ == "__main__":
     plt.show() # plot 1 
 
+# AVERAGE POPULATION SIZE BY PARTY 
+average_pops_query=('select party, avg(pop) as average_pop ' 
+' from (select d.county, d.state, population as pop, party ' 
+' from politics_2020 p ' 
+' join demographics d on d.county=p.county and d.state=p.state ' 
+' where won="True") t1 ' 
+' group by party ')
+cursor.execute(average_pops_query)
+average_pops=result(cursor)
+
+# NUMBER OF COUNTIES BY PARTY  
+num_counties_query=('select party, avg(pop) as average_pop, count(county) '
+' from (select d.county, d.state, population as pop, party' 
+' from politics_2020 p ' 
+' join demographics d on d.county=p.county and d.state=p.state ' 
+' where won="True") t1 ' 
+' group by party ')
+cursor.execute(num_counties_query)
+num_counties=result(cursor)
+
 # FINDING CORRELATION OF CASES AND DEATHS BY PARTY 
 
 rep_query=('select affiliations.fips, cases, deaths, affiliation, population from affiliations '

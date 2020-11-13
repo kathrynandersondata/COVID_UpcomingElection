@@ -41,7 +41,7 @@ I also wanted to explore outliers: counties that either performed very well or v
 
 In politics.py, I explored my first theory: There is a correlation between a county's political affiliation and the extent to which it is devastated by COVID-19. 
 
-I found a strong association between Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election. 
+I found a strong association between Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election, and the average size of a Democratic county is more than 7 times the size of the average Republican county. However, 82% of counties are Republican.
 
 Furthermore, the correlation between population and number of COVID cases for Republican counties was 0.96, compared to 0.88 for Democratic counties, showing that Republican counties experience more cases when accounting for differences in population size. 
 
@@ -71,9 +71,9 @@ Following the election, I wanted to see if my hypothesis was correct. Did states
 
 The third plot shows that 8 of the 13 swing states cast their votes for Biden. 
 
-On a county level, the weighted average percentage of the population infected with COVID (weighted by population size) in these swing states was 3.62% in counties that voted for Biden, as opposed to 3.16% in counties that voted for Trump. As a whole, counties that experienced higher levels voted for Biden, but there were a few exceptions to that rule. 
+On a county level, the weighted average percentage of the population infected with COVID (weighted by population size) in these swing states was 3.62% in counties that voted for Biden, as opposed to 3.16% in counties that voted for Trump. As a whole, counties in swing states that experienced higher levels voted for Biden, but there were a few exceptions to that rule. 
 
-On a nationwide level for all states, the difference between infection rates was even more pronounced and even reversed: Republican counties had a higher infection rate of 3.75% while Democrat ones had 2.91%. 
+On a nationwide level for all states, the difference between infection rates was more pronounced and the the highest parties were <i>reversed</i>: Republican counties had a higher infection rate of 3.75% while Democrat ones had 2.91%. However, this is less significant since COVID case rates are less likely to predict outcomes for states who are historically strong Democratic or Republican counties. 
 
 **Graphs:** 
 
