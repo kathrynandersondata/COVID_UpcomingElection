@@ -41,6 +41,28 @@ plt.ylim(0,2000)
 if __name__ == "__main__":
     plt.show() # plot 1 
 
+median_query=(' with cte as( ' 
+' select demographics.fips as fips, max(cases) as cases, max(deaths) as deaths, max(median_age) as age, ' 
+' max(population) as population, max(percent_female) as percent_female from covid_cases ' 
+' join demographics on demographics.fips=covid_cases.fips ' 
+' group by covid_cases.fips ' 
+ ' order by max(cases) desc), ' 
+' cte2 as( ' 
+' select cte.fips, cases, deaths, ' 
+' case when dem_votes16>rep_votes16 then "Democrat" else "Republican" end as affiliation ' 
+' from cte left join politics on politics.fips=cte.fips), ' 
+' cte3 as ( ' 
+' select fips, cases, affiliation, row_number() over (partition by affiliation order by cases desc) as rnk ' 
+' from cte2) ' 
+' select "med_rep", cases from cte3 ' 
+' where rnk=(select max(rnk) from cte3 where affiliation="Republican")/2 ' 
+' union select "med_dem", cases from cte3 where affiliation="Democrat" ' 
+' and rnk=(select max(rnk) from cte3 where affiliation="Democrat")/2 ' 
+' union select "avg_rep", avg(cases) from cte3 where affiliation="Republican" ' 
+' union select "avg_dem", avg(cases) from cte3 where affiliation="Democrat" ')
+cursor.execute(median_query)
+medians=result(cursor)
+
 # AVERAGE POPULATION SIZE BY PARTY 
 average_pops_query=('select party, avg(pop) as average_pop ' 
 ' from (select d.county, d.state, population as pop, party ' 
@@ -99,17 +121,6 @@ dem_mortality=('select avg(mortality) from affil_mortality'
 cursor.execute(dem_mortality)
 dem_mort=result(cursor) # 3.0%
 
-p5=sns.displot(data=affil_mort_df, x='Cases', y=affil_mort_df['Mortality']*100, hue='Affiliation', kind='kde', fill=True)
-plt.suptitle('Many Democratic Counties Have Higher Case Levels, but Many Republican Counties Have Higher Mortality Rates', fontsize=8)
-plt.title('Cases and Mortality Rate by Affiliation', fontsize=12)
-plt.xlim(0,20000)
-plt.ylim(0,10)
-plt.xlabel('Cases')
-plt.ylabel('Mortality Rate: Deaths Per Cases (%)')
-p5.fig.set_size_inches(8,8)
-if __name__ == "__main__":
-    plt.show() # plot 2 
-
 # PLOTTING POPULATION AND CASES BY PARTY
 
 pop_cases_query=('select demographics.fips, cases, deaths, population, affiliations.affiliation as affiliation'
@@ -119,18 +130,6 @@ pop_cases_query=('select demographics.fips, cases, deaths, population, affiliati
 cursor.execute(pop_cases_query)
 pop_cases=result(cursor)
 pop_cases_df=DataFrame(pop_cases, columns=['Fips','Cases','Deaths','Population','Affiliation'])
-
-p6=sns.lmplot(data=pop_cases_df, x='Population', y='Cases', hue='Affiliation')
-plt.suptitle('The Strong Correlation Between Population and Cases Explains the Strong Correlation Between Democratic Affilition and Cases', fontsize=8)
-plt.title('Population and Cases by Affiliation', fontsize=12)
-plt.xlabel('Population (Millions)')
-plt.ylabel('Cases')
-p6.fig.set_size_inches(8,8)
-if __name__ == "__main__":
-    plt.show() # plot 3 
-
-rep_correl2=np.corrcoef(reps_df.population,reps_df.cases) #0.96
-dem_correl2=np.corrcoef(dems_df.population, dems_df.cases) #0.88 
 
 # LUNEAR REGRESSION TEST ON POPULATION AND CASES BY PARTY 
 
@@ -146,7 +145,7 @@ plt.xlabel('Population (Millions)')
 plt.ylabel('Cases')
 new_plot.fig.set_size_inches(8,8)
 if __name__ == "__main__":
-    plt.show() # plot 3 
+    plt.show() # plot 2 
 
 reps_x=clean_reps_df['population'].values.reshape((-1, 1))
 reps_y=clean_reps_df['cases']
@@ -163,8 +162,6 @@ reps_slope=reps_model.coef_
 dems_rsq=dems_model.score(dems_x,dems_y)
 dems_intercept=dems_model.intercept_ 
 dems_slope=dems_model.coef_ 
-
-print(reps_rsq,reps_slope,dems_rsq,dems_slope)
 
 # finding cases/population by party 
 
@@ -210,7 +207,7 @@ if __name__ == "__main__":
     plt.title('Republican New Cases Overtake Democratic New Cases As Reopening Begins Around the Country', fontsize=8)
     plt.xlabel('Date')
     plt.ylabel('Daily New Cases')
-    plt.show() # plot 3.5 
+    plt.show() # plot 3 
 
 
 # PLOTTING WEEKLY NEW CASES OVER TIME BY PARTY

@@ -1,5 +1,6 @@
 # COVID-19 and the Upcoming Election
-I analyzed the correlation between COVID cases and deaths in the United States and the political party affiliation of these hotspots.
+
+Using four unique datasets from Kaggle.com, I analyzed the association between political party and the number of COVID cases by US county. I also explored the hypothesis that counties experiencing upticks in COVID cases would vote a particular way in swing states by predicting using 2016 election data and comparing results to the 2020 election data. 
 
 
 ## Table of Contents
@@ -41,7 +42,9 @@ I also wanted to explore outliers: counties that either performed very well or v
 
 In politics.py, I explored my first theory: There is a correlation between a county's political affiliation and the extent to which it is devastated by COVID-19. 
 
-I found a strong association between Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election, and the average size of a Democratic county is more than 7 times the size of the average Republican county. However, 82% of counties are Republican.
+I found a strong association between Democratic counties and counties with high instances of COVID. I noticed the median number of cases for Democratic counties was 2240 cases compared to just 686 cases for Republican ones, and the difference was much more stark when analyzing averages (11,415 versus 1,799). 
+
+After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election, and the average size of a Democratic county is more than 7 times the size of the average Republican county. However, 82% of counties are Republican.
 
 I decided to run a linear regression analysis using SciKit Learn. I started by removing outliers that would skew the regression results, so limited my population size to under 4 million and my case count to under 100,000. I then assessed the correlation between population size and case count for both Democratic and Republican counties. Unsurprisingly, both experienced an incredibly strong correlation, with Republican counties showing a 0.86 correlation and Democratic counties having a 0.82 correlation. This shows that the relationship is stronger in Republican counties between population size and case counts, while there is slightly more variance in Democratic counties. 
 
@@ -65,7 +68,7 @@ I wanted to see if there were any changes to this trend as time went on, specifi
 
 In voter_participation.py, I identified which states, based on the 2016 presidential election, were swing states. 
 
-I then wanted to see how these states were performing amidst the pandemic. In the weeks leading up to the election, swing states had higher cases for population size than non-swing states. 
+I then wanted to see how these states were performing amidst the pandemic. In the weeks leading up to the election, swing states had higher cases for population size than non-swing states. In addition, every swing state was experiencing major increases in cases, with the notable exception of Maine. 
 
 In particular, I noticed an uptick in cases (accounting for population size) in Iowa, Wisconsin, and Florida. My hypothesis was that health issues would be at the forefront of voter concerns this year and was likely to persuade voters in these states to vote for a Democratic candidate.
 
