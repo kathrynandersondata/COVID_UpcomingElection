@@ -5,30 +5,40 @@ I analyzed the correlation between COVID cases and deaths in the United States a
 ## Table of Contents
 
 1. [Data Sources](#data-sources)
-2. [Thesis 1](#thesis-1-the-political-party-associated-with-a-county-is-strongly-correlated-with-the-extent-of-the-covid-outbreak-in-that-county)
-3. [Thesis 2](#thesis-2-the-extent-to-which-covid-has-impacted-swing-states-will-impact-the-way-they-vote-in-the-upcoming-presidential-election)
-4. [Smaller Data Explorations](#smaller-data-explorations)
+2. [COVID Statistics]
+3. [Thesis 1](#thesis-1-the-political-party-associated-with-a-county-is-strongly-correlated-with-the-extent-of-the-covid-outbreak-in-that-county)
+4. [Thesis 2](#thesis-2-the-extent-to-which-covid-has-impacted-swing-states-will-impact-the-way-they-vote-in-the-upcoming-presidential-election)
+5. [Smaller Data Explorations](#smaller-data-explorations)
 
 ---
 ## Data Sources: 
 
-In main.py, I use CSV reader to import three unrelated data files from Kaggle.com. 
+In main.py, I use CSV reader to import four unrelated data files from Kaggle.com. 
 
-I created a table called covid_cases that reports the aggregate number of cases and deaths for each county in the US each day. 
+The table covid_cases reports the aggregate number of cases and deaths for each county in the US each day. 
 
-The table politics stores data on the votes by county for each political candidate in the 2016 and 2012 elections. 
+The table politics stores data on the votes by county for each political candidate in the 2016 and 2012 elections. I added a table politics_2020 to store the vote date by county for the 2020 election as of November 12th. 
 
 The table demographics tracks information like gender breakdown, population, and median age for each US county. 
 
 I cleaned the data in this file as well, adding unique county identifier codes called fips to entries that were missing the code so that I could tie the data together.    
 
 ---
+## COVID Statistics: 
+
+I also wanted to explore outliers: counties that either performed very well or very poorly given population size. Since the distribution of COVID cases is not normal, I used calculated the percentile for each county and analyzed the counties in the 1st and 99th percentile. 9 counties in Vermont and 6 in Maine qualified to be in the 1st percentile, whereas 8 in North Dakota and 5 in South Dakota had record-high levels of cases given population size. 
+
+---
 
 ## Thesis 1: The political party associated with a county is strongly correlated with the extent of the COVID outbreak in that county. 
 
-In politics.py, I explored my first theory: There is a correlation between a county's political affiliation and the extent to which it is devastated by COVID-19. I found a strong correlation amongst Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election. Furthermore, the correlation between population and COVID cases for Republican counties was 0.96, compared to 0.88 for Democratic counties. 
+In politics.py, I explored my first theory: There is a correlation between a county's political affiliation and the extent to which it is devastated by COVID-19. 
 
-I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. Furthermore, Republican deaths are on the rise, as Democratic and swing states begin to flatten. 
+I found a strong association between Democratic counties and counties with high instances of COVID. After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election. 
+
+Furthermore, the correlation between population and number of COVID cases for Republican counties was 0.96, compared to 0.88 for Democratic counties, showing that Republican counties experience more cases when accounting for differences in population size. 
+
+I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. Furthermore, Republican and swing state deaths are on the rise, as Democratic state deaths begin to flatten. 
 
 **Graphs:**
 
