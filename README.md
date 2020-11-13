@@ -5,7 +5,7 @@ I analyzed the correlation between COVID cases and deaths in the United States a
 ## Table of Contents
 
 1. [Data Sources](#data-sources)
-2. [COVID Statistics]
+2. [Covid Statistics](#covid-statistics)
 3. [Thesis 1](#thesis-1-the-political-party-associated-with-a-county-is-strongly-correlated-with-the-extent-of-the-covid-outbreak-in-that-county)
 4. [Thesis 2](#thesis-2-the-extent-to-which-covid-has-impacted-swing-states-will-impact-the-way-they-vote-in-the-upcoming-presidential-election)
 5. [Smaller Data Explorations](#smaller-data-explorations)
@@ -15,18 +15,23 @@ I analyzed the correlation between COVID cases and deaths in the United States a
 
 In main.py, I use CSV reader to import four unrelated data files from Kaggle.com. 
 
-The table covid_cases reports the aggregate number of cases and deaths for each county in the US each day. 
+The table covid_cases reports the aggregate number of cases and deaths for each county in the US each day. This data was downloaded from The New York Times, based on reports from state and local health agencies.
 
-The table politics stores data on the votes by county for each political candidate in the 2016 and 2012 elections. I added a table politics_2020 to store the vote date by county for the 2020 election as of November 12th. 
+The table politics stores data on the votes by county for each political candidate in the 2016 and 2012 elections. I added a table politics_2020 to store the vote date by county for the 2020 election as of November 12th. Both data sources originated from CNN.
 
-The table demographics tracks information like gender breakdown, population, and median age for each US county. 
+The table demographics tracks information like gender breakdown, population, and median age for each US county. Demographic information is based on the most recent 2014-18 release of the Amercian Community Survey. As such, population data might be slightly outdated.
 
 I cleaned the data in this file as well, adding unique county identifier codes called fips to entries that were missing the code so that I could tie the data together.    
 
 ---
 ## COVID Statistics: 
 
-I also wanted to explore outliers: counties that either performed very well or very poorly given population size. Since the distribution of COVID cases is not normal, I used calculated the percentile for each county and analyzed the counties in the 1st and 99th percentile. 9 counties in Vermont and 6 in Maine qualified to be in the 1st percentile, whereas 8 in North Dakota and 5 in South Dakota had record-high levels of cases given population size. 
+As of November 11, 2020:
+
+    Total Cases: 10,464,484
+    Total Deaths: 240,612
+
+I also wanted to explore outliers: counties that either performed very well or very poorly given population size. Since the distribution of COVID cases is not normal, I calculated the percentile for each county and analyzed the counties in the 1st and 99th percentile. 9 counties in Vermont and 6 in Maine qualified to be in the 1st percentile, whereas 8 in North Dakota and 5 in South Dakota had record-high levels of cases given population size in the 99th percentile. 
 
 ---
 

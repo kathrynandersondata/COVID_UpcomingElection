@@ -5,6 +5,11 @@ connection = mysql.connector.connect(user='root', password='dataadmin',
                               host='localhost', database='covidstocks')
 cursor=connection.cursor(buffered=True)
 
+# AGGREGATE STATISTICS 
+totals_query='select sum(cases), sum(deaths) from covid_cases where date="2020-11-11"'
+cursor.execute(totals_query)
+totals=result(cursor)
+
 # OUTLIERS 
 outliers_query=('with cte as ( ' 
 ' select covid_cases.fips, covid_cases.county, covid_cases.state, max(cases) as cases, max(population) as pop, ' 
@@ -23,8 +28,6 @@ outliers_query=('with cte as ( '
 cursor.execute(outliers_query)
 outliers=result(cursor)
 outliers_df=DataFrame(outliers, columns=['State','Number_of_Counties','Cases_Per_Pop_Perc'])
-print(outliers_df)
-
 
 cursor.close()
 connection.close() 
