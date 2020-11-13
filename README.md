@@ -75,6 +75,8 @@ On a county level, the weighted average percentage of the population infected wi
 
 On a nationwide level for all states, the difference between infection rates was more pronounced and the the highest parties were <i>reversed</i>: Republican counties had a higher infection rate of 3.75% while Democrat ones had 2.91%. However, this is less significant since COVID case rates are less likely to predict outcomes for states who are historically strong Democratic or Republican counties. 
 
+Out of the 1100 counties in swing states this year, only 19 switched their vote from Republican to Democrat, and 12 switched from Democrat to Republican! Votes for Democrats increased by 6.5 million, however, compared to only 5.5 million for the Republicans. 
+
 **Graphs:** 
 
 <div style="text-align: center">

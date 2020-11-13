@@ -85,5 +85,40 @@ if __name__ == "__main__":
     plt.ylabel('Cases as a Percent of the Population (%)')
     plt.show() # plot 1
 
+# VOTER TURNOUT OR CHANGE OF HEART?
+elections_swings_query=('with cte as(' 
+' select county, state, ' 
+' case when candidate="Joe Biden" then total_votes else 0 end as biden, ' 
+' case when candidate="Donald Trump" then total_votes else 0 end as trump, ' 
+' case when state="Florida" then "FL" when state="Pennsylvania" then "PA" when state="North Carolina" ' 
+' then "NC" when state="Georgia" then "GA" when state="Arizona" then "AZ" when state="Nevada" then "NV" ' 
+' when state="Maine" then "ME" when state="Michigan" then "MI" when state="Wisconsin" then "WI" ' 
+' when state="Colorado" then "CO" when state="Iowa" then "IA" when state="Ohio" then "OH" when state="Texas" ' 
+' then "TX" end as state_abbrev ' 
+' from politics_2020 ' 
+' where state in ("Florida", "Pennsylvania", "North Carolina", "Georgia","Arizona","Nevada", ' 
+' "Maine", "Michigan","Wisconsin","Colorado","Iowa","Ohio","Texas")), ' 
+' cte2 as ('
+' select cte.county, state, sum(biden) as biden, sum(trump) as trump, ' 
+'      max(dem_votes16) as hillary, max(rep_votes16) as trump16, ' 
+'       case when sum(biden)>sum(trump) then "B" else "T" end as winner20, ' 
+'       case when max(dem_votes16)>max(rep_votes16) then "H" else "T" end as winner16, ' 
+'       sum(biden)-max(dem_votes16) as dem_diff, sum(trump)-max(rep_votes16) as rep_diff '
+'from cte ' 
+'join politics on politics.county=cte.county and cte.state_abbrev=politics.state_abbrev ' 
+'group by county, state)'
+' select "t_to_b" as stat, count(*) as count from cte2 where winner16="T" and winner20="B"-- 19 ' 
+' union select "h_to_t", count(*) from cte2 where winner16="H" and winner20="T" -- 12 ' 
+' union select "dem_newvotes", sum(dem_diff) from cte2 ' 
+' union select "rep_newvotes", sum(rep_diff) from cte2 -- 6.4M more D votes, 5.4M more R votes ' 
+' union select "t", count(*) from cte2 where winner16="T" and winner20="T" -- 901 ' 
+' union select "d", count(*) from cte2 where winner16="H" and winner20="B" -- 152 ' 
+)
+cursor.execute(elections_swings_query)
+elections_swings=result(cursor)
+elections_swings_df=DataFrame(elections_swings, columns=['Stat','Report'])
+print(elections_swings_df)
+
+
 cursor.close()
 connection.close() 
