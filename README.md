@@ -50,7 +50,9 @@ I decided to run a linear regression analysis using SciKit Learn. I started by r
 
 The slope of the best-fit line was slightly different among the populations, with Republican counties at 0.033 and Democratic counties at 0.028. Statistically, this means that for every additional 1,000 people in a county, the county will see an increase of 33 and 28 cases, respectively. 
 
-I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. Furthermore, Republican and swing state deaths are on the rise, as Democratic state deaths begin to flatten. 
+I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. 
+
+Furthermore, Republican and swing state deaths are on the rise, as Democratic state deaths begin to flatten. Nationally, the mortality rate is 2.3%, which could be inflated due to inaccessibility of testing for those experiencing minor symptoms, especially at the beginning of the pandemic. 
 
 **Graphs:**
 
@@ -95,17 +97,6 @@ So what ensured the win for Biden: county conversion or increased voter turnout 
 
 ### Smaller Data Explorations:
 
-In demographics.py, I mapped out the trends with COVID cases in relation to population, age, and percentage of the population that was female, finding the highest correlation with population unsurprisingly. 
-
-I also explored the theory that the date of the first case impacted the magnitude of the pandemic in a particular county, with counties who had their first case earlier being more likely to experience a heightened breakout. 
-
-**Graphs:** 
-
-<div style="text-align: center">
-    <img alt="dem_graph1" src="https://user-images.githubusercontent.com/70925521/96491002-9f382b80-120f-11eb-9645-e75364cb34cc.png"/>
-    <img alt="dem_graph2" src="https://user-images.githubusercontent.com/70925521/96489871-094fd100-120e-11eb-88d8-f84ba8fb77dd.png"/>
-
-</div>
 
 In stockgraph.py, I analyzed the correlation between the stock market and the number of new COVID cases. There was a looser correlation than initially predicted. 
 
@@ -116,16 +107,6 @@ In stockgraph.py, I analyzed the correlation between the stock market and the nu
 
 </div>
 
-In mortality.py, I calculated the average and total mortality rates across the country and examined to see if there were any outliers. The counties with the highest mortality rates (greater than 15%) had fewer than 500 total cases, and were the counties with comparatively low populations (22,000 average population compared to nationwide average of 101,000). 
-
-I then looked at counties with high mortality rates and high cases per population, and found Georgia had 6 of these outliers and Texas had 4. Overall, however, the outliers with high cases and mortality rates were a mix of Democratic and Republican counties.  
-
-**Graphs:** 
-    
-<div style="text-align: center">
-    <img alt="stocks_graph1" src="https://user-images.githubusercontent.com/70925521/96489879-0b199480-120e-11eb-8f4f-a9525a7393ed.png"/>
-
-</div>
 
 
     

@@ -4,7 +4,7 @@ connection = mysql.connector.connect(user='root', password='dataadmin',
                               host='localhost', database='covidstocks')
 cursor=connection.cursor(buffered=True)
 
-# FINDING CORRELATION BETWEEN COVID DATA AND STOCK MARKET 
+# FINDING ASSOCIATION BETWEEN COVID DATA AND STOCK MARKET 
 
 correl_query = ('select covid_cases.date, sum(cases), sum(deaths), avg(stock_data.close) ' 
     ' from covid_cases ' 

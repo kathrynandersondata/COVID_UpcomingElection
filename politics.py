@@ -99,8 +99,8 @@ cursor.execute(dem_query)
 dems=result(cursor)
 dems_df=DataFrame(dems,columns = ['fips','cases','deaths','affiliation', 'population'])
 
-rep_correl=np.corrcoef(reps_df.cases,reps_df.deaths) #0.90
-dem_correl=np.corrcoef(dems_df.cases, dems_df.deaths) #0.88
+rep_correl=np.corrcoef(reps_df.cases,reps_df.deaths) #0.89
+dem_correl=np.corrcoef(dems_df.cases, dems_df.deaths) #0.78
 
 # FINDING AVERAGE MORTALITY RATE BY PARTY
 
@@ -115,11 +115,11 @@ affil_mort_df=DataFrame(affil_mort, columns=['Fips', 'Cases','Deaths', 'Mortalit
 rep_mortality=('select avg(mortality) from affil_mortality'
     ' where affiliation="Republican";')
 cursor.execute(rep_mortality)
-rep_mort=result(cursor) # 2.0%
+rep_mort=result(cursor) # 1.8%
 dem_mortality=('select avg(mortality) from affil_mortality'
     ' where affiliation="Democrat";')
 cursor.execute(dem_mortality)
-dem_mort=result(cursor) # 3.0%
+dem_mort=result(cursor) # 2.5%
 
 # PLOTTING POPULATION AND CASES BY PARTY
 

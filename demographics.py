@@ -28,8 +28,6 @@ if __name__ == "__main__":
     p.fig.suptitle('Various Factor Influences on COVID Cases and Deaths', fontsize=12)
     plt.show() # plot 1 
 
-correl=pearsonr(demo_cases_df.Population, demo_cases_df.Cases) # returns 0.94 
-
 # ANALYZING IF HOW EARLY YOU SAW CASES IMPACTS THE GROWTH OF THE DISEASE
 
 first_date_query = ('select min(date), fips, county, state, sum(cases), sum(deaths) from covid_cases '
