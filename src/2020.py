@@ -171,7 +171,5 @@ margins_stats=margins_df.merge(barplot_data.groupby(['State', 'Election Year'], 
 margins_stats['Percent_Margin (%)']=margins_stats['Margin']/margins_stats['Votes']*100
 margins=margins_stats.sort_values(by='Percent_Margin (%)', ascending=False)
 
-print(margins)
-
 cursor.close()
 connection.close() 

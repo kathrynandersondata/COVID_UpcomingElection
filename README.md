@@ -86,7 +86,7 @@ I then wanted to see how these states were performing amidst the pandemic. In th
 
 
 <div style="text-align: center">
-    <img alt="swing_vs_nonswing_cases" src="https://user-images.githubusercontent.com/70925521/99010513-182d5900-2518-11eb-81a3-569f80b7a4d0.png" />
+    <img alt="swing_vs_nonswing_cases" src="https://user-images.githubusercontent.com/70925521/99320444-a3b92980-2839-11eb-9989-b58814271d8c.png" />
 
 </div>
 

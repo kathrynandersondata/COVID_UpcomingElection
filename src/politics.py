@@ -279,17 +279,31 @@ cursor.execute(deaths_query)
 deaths=result(cursor)
 deaths_df=DataFrame(deaths, columns=['Date','State','#Cases','#Deaths','Affiliation'])
 
+'''
 deaths_affil_df=deaths_df.merge(swing_cases_df, on='State', how='left').drop(columns=['Cases','Deaths'])
 deaths_affil_df['Affil_Status']=deaths_affil_df['Status'][deaths_affil_df['Status']=='S']
 deaths_affil_df["Affil_Status"].fillna(deaths_affil_df['Affiliation'], inplace = True) 
+'''
+
+affil_state_df=swing_cases_df.drop(columns=['Cases','Deaths','County']).groupby('State', as_index=False).max()
+combined_df=deaths_df.merge(affil_state_df, on='State', how='left')
+print(combined_df.tail(50))
 
 state_pop_query=('select state, sum(population) from demographics group by state;')
 cursor.execute(state_pop_query)
 state_pops=result(cursor)
 state_pop_df=DataFrame(state_pops, columns=['State','Population'])
 
-death_pop_df=deaths_affil_df.merge(state_pop_df, on='State', how='left')
-death_pop_df['Deaths_Per_Pop']=(death_pop_df['#Deaths']/death_pop_df['Population']*100).astype(float)
+'''
+death_pop_df=deaths_affil_df.merge(state_pop_df, on='State', how='left').drop(columns=['County'])
+#death_pop_df['Deaths_Per_Pop']=(death_pop_df['#Deaths']/death_pop_df['Population']*100).astype(float)
+death_pop_df['#Deaths']=death_pop_df['#Deaths'].astype(float)
+death_pop_df['Population']=death_pop_df['Population'].astype(float)
+
+death_rates_df=death_pop_df.groupby(['Date','Affiliation'], as_index=False).sum()
+death_rates_df['Deaths_Per_Pop']=death_pop_df['#Deaths']/death_pop_df['Population']*100
+
+#print(death_pop_df.tail(50))
 
 if __name__ == "__main__":
     sns.lineplot(data=death_pop_df, x='Date',y='Deaths_Per_Pop', hue='Affil_Status', ci=None)
@@ -298,6 +312,7 @@ if __name__ == "__main__":
     plt.xlabel('Date')
     plt.ylabel('Percentage of the Population that Died due to COVID (%)')
     plt.show() # plot 5
+'''
 
 cursor.close()
 connection.close() 
