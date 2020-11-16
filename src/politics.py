@@ -261,7 +261,7 @@ if __name__ == "__main__":
     plt.title('Republican New Cases Overtake Democratic New Cases As Reopening Begins Around the Country', fontsize=8)
     plt.xlabel('Date')
     plt.ylabel('Weekly New Cases')
-    plt.xlim('2020-02-01','2020-11-06')
+    plt.xlim('2020-02-01','2020-11-01')
     plt.show() # plot 4
 
 # DEATHS AS PERCENTAGE OF POPULATION BY AFFILIATION

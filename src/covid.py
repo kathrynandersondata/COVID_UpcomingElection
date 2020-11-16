@@ -19,7 +19,6 @@ ranks_query=('select county, state, max(cases) as cases, max(deaths) as deaths, 
 cursor.execute(ranks_query)
 ranks=result(cursor)
 ranks_df=DataFrame(ranks, columns=['County','State','Cases','Deaths','Cases_Rnk'])
-print(ranks_df)
 
 # OUTLIERS 
 outliers_query=('with cte as ( ' 

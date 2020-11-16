@@ -113,7 +113,7 @@ elections_swings_query=('with cte as ( '
 ' select * from cte2') 
 cursor.execute(elections_swings_query)
 elections_swings=result(cursor)
-elections_swings_df=DataFrame(elections_swings, columns=['County','State','Biden','Trump','Clinton','Trump16','Win20','Win16','Dem_Diff','Rep_Diff'])
+elections_swings_df=DataFrame(elections_swings, columns=['County','State','Biden20','Trump20','Clinton16','Trump16','Win20','Win16','Dem_Diff','Rep_Diff'])
 
 trump_to_biden=len(elections_swings_df[(elections_swings_df['Win16']=='T') & (elections_swings_df['Win20']=='B')]) 
 clinton_to_trump=len(elections_swings_df[(elections_swings_df['Win16']=='H') & (elections_swings_df['Win20']=='T')]) 
@@ -122,25 +122,33 @@ dem=len(elections_swings_df[(elections_swings_df['Win16']=='H') & (elections_swi
 new_dem_votes=elections_swings_df['Dem_Diff'].sum()
 new_rep_votes=elections_swings_df['Rep_Diff'].sum()
 
+elections_swings_df['Votes16']=(elections_swings_df['Trump16']+elections_swings_df['Clinton16']).astype(float)
+elections_swings_df['Votes20']=(elections_swings_df['Trump20']+elections_swings_df['Biden20']).astype(float)
+elections_swings_df['Trump20']=(elections_swings_df['Trump20']).astype(float)
+elections_swings_df['Biden20']=(elections_swings_df['Biden20']).astype(float)
 
-elections_swings_df['Votes16']=(elections_swings_df['Trump16']+elections_swings_df['Clinton']).astype(float)
-elections_swings_df['Votes20']=(elections_swings_df['Trump']+elections_swings_df['Biden']).astype(float)
-elections_swings_df['Trump']=(elections_swings_df['Trump']).astype(float)
-elections_swings_df['Biden']=(elections_swings_df['Biden']).astype(float)
-
-clean_elections=elections_swings_df[['State','Biden','Trump','Clinton','Trump16']].groupby(['State'], as_index=False).sum()
+clean_elections=elections_swings_df[['State','Biden20','Trump20','Clinton16','Trump16']].groupby(['State'], as_index=False).sum()
 barplot_data=clean_elections.melt('State', var_name='Candidate', value_name='Votes')
-barplot_data['Election']='2016'
-barplot_data['Election'][barplot_data['Candidate']=='Biden']='2020'
-barplot_data['Election'][barplot_data['Candidate']=='Trump']='2020'
 
-clean_elections['2020']=abs(clean_elections['Biden']-clean_elections['Trump'])
-clean_elections['2016']=abs(clean_elections['Clinton']-clean_elections['Trump16'])
+def election_year(row):
+    if row['Candidate']=='Trump16':
+        return '2016'
+    if row['Candidate']=='Trump20':
+        return '2020'
+    if row['Candidate']=='Biden20':
+        return '2020'
+    if row['Candidate']=='Clinton16':
+        return '2016'
+
+barplot_data['Election_Year']=barplot_data.apply (lambda row: election_year(row), axis=1)
+
+clean_elections['2020']=abs(clean_elections['Biden20']-clean_elections['Trump20'])
+clean_elections['2016']=abs(clean_elections['Clinton16']-clean_elections['Trump16'])
 margins_df=clean_elections[['State','2020','2016']]
 margins_df=margins_df.melt('State',var_name='Election Year',value_name='Margin')
 
 if __name__ == "__main__":
-    sns.barplot(x=barplot_data["State"], y=barplot_data['Votes'], hue=barplot_data['Election'])
+    sns.barplot(x=barplot_data["State"], y=barplot_data['Votes'], hue=barplot_data['Election_Year'], ci=None)
     plt.suptitle('Voter Turnout for 2020 and 2016 Elections', fontsize=12)
     plt.title('Voter Turnout Was Significantly Higher in the 2020 Election, Especially in Texas, Florida, Arizona, and Georgia', fontsize=8)
     plt.xlabel('State', fontsize=10)
@@ -148,14 +156,14 @@ if __name__ == "__main__":
     plt.show() # plot 2 
 
 if __name__ == "__main__":
-    sns.barplot(x=margins_df["State"], y=margins_df['Margin'], hue=margins_df['Election Year'])
+    sns.barplot(x=margins_df["State"], y=margins_df['Margin'], hue=margins_df['Election Year'], ci=None)
     plt.suptitle('Margins for 2020 and 2016 Elections', fontsize=12)
     plt.title('Arizona, Georgia, and Nevada Ran the Closest Races In 2020, Whereas Michigan and Nevada Were the Closest in 2016', fontsize=8)
     plt.xlabel('State', fontsize=10)
     plt.ylabel('Margin of Votes')
     plt.show() # plot 3
 
-clean_elections['Increase']=clean_elections['Biden']+clean_elections['Trump']-clean_elections['Clinton']-clean_elections['Trump16']
+clean_elections['Increase']=clean_elections['Biden20']+clean_elections['Trump20']-clean_elections['Clinton16']-clean_elections['Trump16']
 clean_elections.sort_values(by='Increase', ascending=False)
 
 cursor.close()

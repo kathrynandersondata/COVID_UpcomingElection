@@ -65,7 +65,7 @@ The slope of the best-fit line was slightly different among the populations, wit
 I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. 
 
 <div style="text-align: center">
-    <img alt="cases_over_time" src="https://user-images.githubusercontent.com/70925521/99011715-b4f0f600-251a-11eb-87d6-d00ce8102acc.png" />
+    <img alt="cases_over_time" src="https://user-images.githubusercontent.com/70925521/99295289-3db9ab80-2813-11eb-98b0-02b3f258bb84.png" />
 
 </div>
 
@@ -110,7 +110,7 @@ So what ensured the win for Biden: county conversion or increased voter turnout 
 
 
 <div style="text-align: center">
-    <img alt="turnout_barplot" src="https://user-images.githubusercontent.com/70925521/99127969-9866c380-25d7-11eb-93c3-b3d3ac012698.png" />
+    <img alt="turnout_barplot" src="https://user-images.githubusercontent.com/70925521/99293882-3f826f80-2811-11eb-937a-b8fc34f67bc1.png" />
 
 </div>
 

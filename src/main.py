@@ -63,7 +63,7 @@ def read_csv(filename):
         data= list(csv_reader)
     return data 
 
-csv_data=read_csv('us-counties.csv')
+csv_data=read_csv('./assets/us-counties.csv')
 
 def bulk_insert(data):
     min_index=0
@@ -145,7 +145,7 @@ def create_demographics(dictionary):
 create_demographics(tables)
 '''
 
-demo_data=read_csv('county_demographics.csv')
+demo_data=read_csv('./assets/county_demographics.csv')
 
 def bulk_insert_demog(data):
     min_index=0
@@ -200,7 +200,7 @@ create the table:
 create_politics(tables)
 ''' 
 
-politics_data=read_csv('votes.csv')
+politics_data=read_csv('./assets/votes.csv')
 def create_clean_politics_data():
     clean_politics_data=[]
     for row in politics_data: # selecting only the columns from the csv that we want 
@@ -275,7 +275,7 @@ def create_politics_2020(dictionary):
 create_politics_2020(tables)
 '''
 
-politics2020_data=read_csv('president_county_candidate.csv')
+politics2020_data=read_csv('./assets/president_county_candidate.csv')
 
 def bulk_insert_politics(data):
     min_index=0
