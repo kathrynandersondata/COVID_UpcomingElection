@@ -134,13 +134,26 @@ barplot_data['Election']='2016'
 barplot_data['Election'][barplot_data['Candidate']=='Biden']='2020'
 barplot_data['Election'][barplot_data['Candidate']=='Trump']='2020'
 
+clean_elections['2020']=abs(clean_elections['Biden']-clean_elections['Trump'])
+clean_elections['2016']=abs(clean_elections['Clinton']-clean_elections['Trump16'])
+margins_df=clean_elections[['State','2020','2016']]
+margins_df=margins_df.melt('State',var_name='Election Year',value_name='Margin')
+
 if __name__ == "__main__":
     sns.barplot(x=barplot_data["State"], y=barplot_data['Votes'], hue=barplot_data['Election'])
-    plt.suptitle('Voter Turnout for 2016 and 2020 Elections', fontsize=12)
+    plt.suptitle('Voter Turnout for 2020 and 2016 Elections', fontsize=12)
     plt.title('Voter Turnout Was Significantly Higher in the 2020 Election, Especially in Texas, Florida, Arizona, and Georgia', fontsize=8)
     plt.xlabel('State', fontsize=10)
     plt.ylabel('Votes (millions)')
     plt.show() # plot 2 
+
+if __name__ == "__main__":
+    sns.barplot(x=margins_df["State"], y=margins_df['Margin'], hue=margins_df['Election Year'])
+    plt.suptitle('Margins for 2020 and 2016 Elections', fontsize=12)
+    plt.title('Arizona, Georgia, and Nevada Ran the Closest Races In 2020, Whereas Michigan and Nevada Were the Closest in 2016', fontsize=8)
+    plt.xlabel('State', fontsize=10)
+    plt.ylabel('Margin of Votes')
+    plt.show() # plot 3
 
 clean_elections['Increase']=clean_elections['Biden']+clean_elections['Trump']-clean_elections['Clinton']-clean_elections['Trump16']
 clean_elections.sort_values(by='Increase', ascending=False)

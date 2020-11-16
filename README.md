@@ -44,23 +44,35 @@ In politics.py, I explored my first theory: There is a correlation between a cou
 
 I found a strong association between Democratic counties and counties with high instances of COVID. I noticed the median number of cases for Democratic counties was 2240 cases compared to just 686 cases for Republican ones, and the difference was much more stark when analyzing averages (11,415 versus 1,799). 
 
+<div style="text-align: center">
+    <img alt="scatterplot" src="https://user-images.githubusercontent.com/70925521/99011694-adc9e800-251a-11eb-8e22-9c9bb9a6720a.png"/>
+
+</div>
+
 After digging into this further, I noticed that these Democratic counties had very large populations and that Republican counties tended to be less dense. In fact, 87 of the largest 100 counties in the US voted Democrat in the 2020 Election, and the average size of a Democratic county is more than 7 times the size of the average Republican county. However, 82% of counties are Republican.
 
-I decided to run a linear regression analysis using SciKit Learn. I started by removing outliers that would skew the regression results, so limited my population size to under 4 million and my case count to under 100,000. I then assessed the correlation between population size and case count for both Democratic and Republican counties. Unsurprisingly, both experienced an incredibly strong correlation, with Republican counties showing a 0.86 correlation and Democratic counties having a 0.82 correlation. This shows that the relationship is stronger in Republican counties between population size and case counts, while there is slightly more variance in Democratic counties. 
+I decided to run a linear regression analysis using SciKit Learn. I started by removing outliers that would skew the regression results, so limited my population size to under 4 million and my case count to under 100,000. Only the top 0.2% of counties with the highest cases and 0.1% of counties with the highest population were removed. 
+
+I then assessed the correlation between population size and case count for both Democratic and Republican counties. Unsurprisingly, both experienced an incredibly strong correlation, with Republican counties showing a 0.86 correlation and Democratic counties having a 0.82 correlation. This shows that the relationship is stronger in Republican counties between population size and case counts, while there is slightly more variance in Democratic counties. 
 
 The slope of the best-fit line was slightly different among the populations, with Republican counties at 0.033 and Democratic counties at 0.028. Statistically, this means that for every additional 1,000 people in a county, the county will see an increase of 33 and 28 cases, respectively. 
 
+<div style="text-align: center">
+    <img alt="regression" src="https://user-images.githubusercontent.com/70925521/99114098-4b2a2800-25be-11eb-8994-63969170034f.png" />
+
+</div>
+
 I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. 
+
+<div style="text-align: center">
+    <img alt="cases_over_time" src="https://user-images.githubusercontent.com/70925521/99011715-b4f0f600-251a-11eb-87d6-d00ce8102acc.png" />
+
+</div>
 
 Furthermore, Republican and swing state deaths are on the rise, as Democratic state deaths begin to flatten. Nationally, the mortality rate is 2.3%, which could be inflated due to inaccessibility of testing for those experiencing minor symptoms, especially at the beginning of the pandemic. 
 
-**Graphs:**
-
 <div style="text-align: center">
-    <img alt="politics_graph1" src="https://user-images.githubusercontent.com/70925521/99011694-adc9e800-251a-11eb-8e22-9c9bb9a6720a.png"/>
-    <img alt="politics_graph2" src="https://user-images.githubusercontent.com/70925521/99114098-4b2a2800-25be-11eb-8994-63969170034f.png" />
-    <img alt="politics_graph3" src="https://user-images.githubusercontent.com/70925521/99011715-b4f0f600-251a-11eb-87d6-d00ce8102acc.png" />
-    <img alt="politics_graph4" src="https://user-images.githubusercontent.com/70925521/99011720-b7ebe680-251a-11eb-8dc9-1bafb57e7936.png" />
+    <img alt="mortality" src="https://user-images.githubusercontent.com/70925521/99011720-b7ebe680-251a-11eb-8dc9-1bafb57e7936.png" />
 
 </div>
 
@@ -72,24 +84,40 @@ In voter_participation.py, I identified which states, based on the 2016 presiden
 
 I then wanted to see how these states were performing amidst the pandemic. In the weeks leading up to the election, swing states had higher cases for population size than non-swing states. In addition, every swing state was experiencing major increases in cases, with the notable exception of Maine. 
 
+
+<div style="text-align: center">
+    <img alt="swing_vs_nonswing_cases" src="https://user-images.githubusercontent.com/70925521/99010513-182d5900-2518-11eb-81a3-569f80b7a4d0.png" />
+
+</div>
+
 In particular, I noticed an uptick in cases (accounting for population size) in Iowa, Wisconsin, and Florida. My hypothesis was that health issues would be at the forefront of voter concerns this year and was likely to persuade voters in these states to vote for a Democratic candidate.
+
+
+<div style="text-align: center">
+    <img alt="swing_cases" src="https://user-images.githubusercontent.com/70925521/99027784-0d84bb00-253c-11eb-8616-f0a3e049ad8d.png" />
+
+</div>
 
 Following the election, I wanted to see if my hypothesis was correct. Did states struggling admist the pandemic vote Democratic? 
 
-The third plot shows that 8 of the 13 swing states cast their votes for Biden. 
+The plot above shows that 8 of the 13 swing states cast their votes for Biden. 
 
 On a county level, the weighted average percentage of the population infected with COVID (weighted by population size) in these swing states was 3.62% in counties that voted for Biden, as opposed to 3.16% in counties that voted for Trump. As a whole, counties in swing states that experienced higher levels voted for Biden, but there were a few exceptions to that rule. 
 
 On a nationwide level for all states, the difference between infection rates was more pronounced and the the highest parties were <i>reversed</i>: Republican counties had a higher infection rate of 3.75% while Democrat ones had 2.91%. However, this is less significant since COVID case rates are less likely to predict outcomes for states who are historically strong Democratic or Republican counties. 
 
-So what ensured the win for Biden: county conversion or increased voter turnout in Hillary's 2016 counties? Out of the 1100 counties in swing states this year, only 19 switched their vote from Republican to Democrat, and 12 switched from Democrat to Republican. However, votes for Democrats increased by 6.5 million, compared to only 5.5 million for the Republicans. Voter turnout reached record high levels across the nation as well, with 16.2 million more citizens casting votes for Biden than Clinton and 11.8 million more votes for Trump. 
+So what ensured the win for Biden: county conversion or increased voter turnout in Hillary's 2016 counties? Out of the 1100 counties in swing states this year, only 19 switched their vote from Republican to Democrat, and 12 switched from Democrat to Republican. However, votes for Democrats increased by 6.5 million, compared to only 5.5 million for the Republicans. Voter turnout reached record high levels across the nation as well, with 16.2 million more citizens casting votes for Biden than Clinton and 11.8 million more votes for Trump. Voter turnout increased in every swing state, with the highest jumps in Texas, Florida, Arizona, and Georgia. 
 
-**Graphs:** 
 
 <div style="text-align: center">
-    <img alt="swing_graph2" src="https://user-images.githubusercontent.com/70925521/99010513-182d5900-2518-11eb-81a3-569f80b7a4d0.png" />
-    <img alt="swing_graph3" src="https://user-images.githubusercontent.com/70925521/99027784-0d84bb00-253c-11eb-8616-f0a3e049ad8d.png" />
-    <img alt="barplot" src="https://user-images.githubusercontent.com/70925521/99127969-9866c380-25d7-11eb-93c3-b3d3ac012698.png" />
+    <img alt="turnout_barplot" src="https://user-images.githubusercontent.com/70925521/99127969-9866c380-25d7-11eb-93c3-b3d3ac012698.png" />
+
+</div>
+
+The closest races ran in Arizona, Georgia, and Nevada this year, with less than 12,000 votes separating the Democratic and Republican parties in Arizona. 
+
+<div style="text-align: center">
+    <img alt="margin_barplot" src="https://user-images.githubusercontent.com/70925521/99287214-f7128400-2807-11eb-9208-fbdfbabf9dcd.png" />
 
 </div>
 

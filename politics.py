@@ -1,4 +1,8 @@
-from main import * 
+import mysql.connector
+from main import result
+from pandas import DataFrame
+import seaborn as sns 
+import matplotlib.pyplot as plt 
 from demographics import demo_cases_query
 from voter_participation import * 
 from sklearn.linear_model import LinearRegression
@@ -137,6 +141,17 @@ clean_reps_df=reps_df[(reps_df['population']<4000000) & (reps_df['cases']<100000
 clean_dems_df=dems_df[(dems_df['population']<4000000) & (dems_df['cases']<100000)]
 
 clean_df=pop_cases_df[(pop_cases_df['Population']<4000000) & (pop_cases_df['Cases']<100000)]
+
+cases_removed_query=('select county, state, max(cases) as cases, max(deaths) as deaths, ' 
+' ntile(500) over(order by max(cases) desc) ' 
+' from covid_cases group by county, state order by 3 desc limit 10')
+cursor.execute(cases_removed_query)
+cases_removed=result(cursor) # top 0.2% of cases removed 
+
+pops_removed_query=('select county, state, population, ntile(1000) over(order by population desc) as ptile ' 
+'from demographics order by 3 desc limit 10')
+cursor.execute(pops_removed_query)
+pops_removed=result(cursor) # top 0.1% of population sizes removed 
 
 new_plot=sns.lmplot(data=clean_df, x='Population', y='Cases', hue='Affiliation')
 plt.suptitle('The Strong Correlation Between Population and Cases Explains the Strong Correlation Between Democratic Affilition and Cases', fontsize=8)
