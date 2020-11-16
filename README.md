@@ -114,7 +114,9 @@ So what ensured the win for Biden: county conversion or increased voter turnout 
 
 </div>
 
-The closest races ran in Arizona, Georgia, and Nevada this year, with less than 12,000 votes separating the Democratic and Republican parties in Arizona. 
+The closest races by number of votes ran in Arizona, Georgia, and Nevada this year, with less than 12,000 votes separating the Democratic and Republican parties in Arizona. As a percentage of total votes, Georgia's race was the closest this year with its 12,670 vote difference representing 0.257% of the total votes, with Arizona close behind at 0.35%. In the 2016, Michigan ran the closest race at a slightly thinner margin than Arizona in the 2020 election at 0.255% of the total vote (12,000 votes). The vote differential this year was significantly elevated at 149,000 votes. 
+
+The races in most states became much closer this year, with the exception of the races in Colorado and Florida which grew less competitive. For example, in Colorado, 435,000 votes separated the Democrat and Republican parties, which represents 13.9% of the total vote count this year, as opposed to a 75,000 vote difference at 3.2% of the total vote last election. 
 
 <div style="text-align: center">
     <img alt="margin_barplot" src="https://user-images.githubusercontent.com/70925521/99287214-f7128400-2807-11eb-9208-fbdfbabf9dcd.png" />

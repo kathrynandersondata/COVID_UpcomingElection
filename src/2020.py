@@ -88,7 +88,7 @@ if __name__ == "__main__":
     plt.ylabel('Cases as a Percent of the Population (%)')
     plt.show() # plot 1
 
-# VOTER TURNOUT OR CHANGE OF HEART?
+# VOTER TURNOUT OR COUNTY CONVERSION ANALYSIS 
 elections_swings_query=('with cte as ( ' 
 ' select county, state, ' 
 ' case when candidate="Joe Biden" then total_votes else 0 end as biden, ' 
@@ -140,7 +140,7 @@ def election_year(row):
     if row['Candidate']=='Clinton16':
         return '2016'
 
-barplot_data['Election_Year']=barplot_data.apply (lambda row: election_year(row), axis=1)
+barplot_data['Election Year']=barplot_data.apply (lambda row: election_year(row), axis=1)
 
 clean_elections['2020']=abs(clean_elections['Biden20']-clean_elections['Trump20'])
 clean_elections['2016']=abs(clean_elections['Clinton16']-clean_elections['Trump16'])
@@ -148,7 +148,7 @@ margins_df=clean_elections[['State','2020','2016']]
 margins_df=margins_df.melt('State',var_name='Election Year',value_name='Margin')
 
 if __name__ == "__main__":
-    sns.barplot(x=barplot_data["State"], y=barplot_data['Votes'], hue=barplot_data['Election_Year'], ci=None)
+    sns.barplot(x=barplot_data["State"], y=barplot_data['Votes'], hue=barplot_data['Election Year'], ci=None)
     plt.suptitle('Voter Turnout for 2020 and 2016 Elections', fontsize=12)
     plt.title('Voter Turnout Was Significantly Higher in the 2020 Election, Especially in Texas, Florida, Arizona, and Georgia', fontsize=8)
     plt.xlabel('State', fontsize=10)
@@ -165,6 +165,13 @@ if __name__ == "__main__":
 
 clean_elections['Increase']=clean_elections['Biden20']+clean_elections['Trump20']-clean_elections['Clinton16']-clean_elections['Trump16']
 clean_elections.sort_values(by='Increase', ascending=False)
+
+# MARGIN STATISTICS 
+margins_stats=margins_df.merge(barplot_data.groupby(['State', 'Election Year'], as_index=False).sum(), on=['State','Election Year'], how='left')
+margins_stats['Percent_Margin (%)']=margins_stats['Margin']/margins_stats['Votes']*100
+margins=margins_stats.sort_values(by='Percent_Margin (%)', ascending=False)
+
+print(margins)
 
 cursor.close()
 connection.close() 
