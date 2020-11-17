@@ -83,7 +83,7 @@ Nationally, the mortality rate is 2.3%, which could be slightly inflated due to 
 
 In voter_participation.py, I identified which states, based on the 2016 presidential election, were swing states. 
 
-I then wanted to see how these states were performing amidst the pandemic. In the weeks leading up to the election, swing states had higher cases for population size than non-swing states. In addition, every swing state was experiencing major increases in cases, with the notable exception of Maine. 
+I then wanted to see how these states were performing amidst the pandemic. In the weeks leading up to the election, swing states had higher cases for population size than non-swing states (3.39% population infection rate vs. 3.09% for non-swing states). In addition, every swing state was experiencing major increases in cases, with the notable exception of Maine. 
 
 
 <div style="text-align: center">
