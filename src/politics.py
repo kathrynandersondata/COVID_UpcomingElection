@@ -107,6 +107,7 @@ rep_correl=np.corrcoef(reps_df.cases,reps_df.deaths) #0.89
 dem_correl=np.corrcoef(dems_df.cases, dems_df.deaths) #0.78
 
 # FINDING AVERAGE MORTALITY RATE BY PARTY
+# note: not weighted by population size 
 
 affil_mort_query=('create temporary table affil_mortality ' 
     ' select fips, cases, deaths, deaths/cases as mortality, affiliation from affiliations;')
@@ -289,7 +290,26 @@ if __name__ == "__main__":
 
 # Death statistics 
 
-
+growth_query=('with cte as( ' 
+' select date, state, sum(cases) as cases, sum(deaths) as deaths,' 
+' case when sum(dem_votes16)>sum(rep_votes16) then "D" else "R" end as affiliation ' 
+' from covid_cases ' 
+' join politics on politics.fips=covid_cases.fips ' 
+' group by date, covid_cases.state ' 
+' order by date), ' 
+' cte2 as( ' 
+' select date, affiliation, sum(deaths) as deaths' 
+' from cte group by date, affiliation ' 
+' order by date desc) '
+' select ((select deaths from cte2 where date="2020-11-11" and affiliation="D")-' 
+       ' (select deaths from cte2 where date="2020-10-11" and affiliation="D"))/ ' 
+        ' (select deaths from cte2 where date="2020-10-11" and affiliation="D") as dem_growth,' 
+       ' ((select deaths from cte2 where date="2020-11-11" and affiliation="R")- ' 
+       ' (select deaths from cte2 where date="2020-10-11" and affiliation="R"))/ ' 
+        ' (select deaths from cte2 where date="2020-10-11" and affiliation="R") as rep_growth ' 
+' from cte2 limit 1 ')
+cursor.execute(growth_query)
+growth=result(cursor)
 
 cursor.close()
 connection.close() 
