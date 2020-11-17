@@ -9,7 +9,6 @@ Using four unique datasets from Kaggle.com, I analyzed the association between p
 2. [Covid Statistics](#covid-statistics)
 3. [Thesis 1](#thesis-1-the-political-party-associated-with-a-county-is-strongly-correlated-with-the-extent-of-the-covid-outbreak-in-that-county)
 4. [Thesis 2](#thesis-2-the-extent-to-which-covid-has-impacted-swing-states-will-impact-the-way-they-vote-in-the-upcoming-presidential-election)
-5. [Smaller Data Explorations](#smaller-data-explorations)
 
 ---
 ## Data Sources: 
@@ -126,19 +125,6 @@ The races in most states became much closer this year, with the exception of the
 </div>
 
 ---
-
-### Smaller Data Explorations:
-
-
-In stockgraph.py, I analyzed the correlation between the stock market and the number of new COVID cases. There was a looser correlation than initially predicted. 
-
-**Graphs:** 
-
-<div style="text-align: center">
-    <img alt="stocks_graph1" src="https://user-images.githubusercontent.com/70925521/96514263-6610b300-1231-11eb-8c46-761a479c257c.png"/>
-
-</div>
-
 
 
     
