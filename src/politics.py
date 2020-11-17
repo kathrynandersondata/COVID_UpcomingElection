@@ -264,55 +264,32 @@ if __name__ == "__main__":
     plt.xlim('2020-02-01','2020-11-01')
     plt.show() # plot 4
 
-# DEATHS AS PERCENTAGE OF POPULATION BY AFFILIATION
+# DEATHS BY AFFILIATION
 
-deaths_query=('select date, state, sum(cases) as cases, sum(deaths) as deaths,'
-    ' case'
-        ' when sum(dem_votes16)>sum(rep_votes16) then "D"'
-        ' else "R"'
-    ' end as affiliation'
-    ' from covid_cases'
-    ' join politics on politics.fips=covid_cases.fips'
-    ' group by date, covid_cases.state' 
-    ' order by date;')
+deaths_query=('with cte as( ' 
+' select date, state, sum(cases) as cases, sum(deaths) as deaths, ' 
+' case when sum(dem_votes16)>sum(rep_votes16) then "D" else "R" end as affiliation ' 
+' from covid_cases ' 
+' join politics on politics.fips=covid_cases.fips ' 
+' group by date, covid_cases.state ' 
+' order by date) ' 
+' select date, affiliation, sum(deaths) from cte ' 
+' group by date, affiliation') 
 cursor.execute(deaths_query)
 deaths=result(cursor)
-deaths_df=DataFrame(deaths, columns=['Date','State','#Cases','#Deaths','Affiliation'])
-
-'''
-deaths_affil_df=deaths_df.merge(swing_cases_df, on='State', how='left').drop(columns=['Cases','Deaths'])
-deaths_affil_df['Affil_Status']=deaths_affil_df['Status'][deaths_affil_df['Status']=='S']
-deaths_affil_df["Affil_Status"].fillna(deaths_affil_df['Affiliation'], inplace = True) 
-'''
-
-affil_state_df=swing_cases_df.drop(columns=['Cases','Deaths','County']).groupby('State', as_index=False).max()
-combined_df=deaths_df.merge(affil_state_df, on='State', how='left')
-print(combined_df.tail(50))
-
-state_pop_query=('select state, sum(population) from demographics group by state;')
-cursor.execute(state_pop_query)
-state_pops=result(cursor)
-state_pop_df=DataFrame(state_pops, columns=['State','Population'])
-
-'''
-death_pop_df=deaths_affil_df.merge(state_pop_df, on='State', how='left').drop(columns=['County'])
-#death_pop_df['Deaths_Per_Pop']=(death_pop_df['#Deaths']/death_pop_df['Population']*100).astype(float)
-death_pop_df['#Deaths']=death_pop_df['#Deaths'].astype(float)
-death_pop_df['Population']=death_pop_df['Population'].astype(float)
-
-death_rates_df=death_pop_df.groupby(['Date','Affiliation'], as_index=False).sum()
-death_rates_df['Deaths_Per_Pop']=death_pop_df['#Deaths']/death_pop_df['Population']*100
-
-#print(death_pop_df.tail(50))
+deaths_df=DataFrame(deaths, columns=['Date','Affiliation','Deaths'])
 
 if __name__ == "__main__":
-    sns.lineplot(data=death_pop_df, x='Date',y='Deaths_Per_Pop', hue='Affil_Status', ci=None)
-    plt.title('Republican and Swing State Deaths on the Rise as Democratic Deaths Taper', fontsize=8)
-    plt.suptitle('Deaths As A Percentage of Population Over Time by Political Affiliation', fontsize=12)
+    sns.lineplot(data=deaths_df, x='Date',y='Deaths', hue='Affiliation', ci=None)
+    plt.title('Republican Deaths Outpace Democrat Deaths', fontsize=8)
+    plt.suptitle('Deaths Over Time by Political Affiliation', fontsize=12)
     plt.xlabel('Date')
-    plt.ylabel('Percentage of the Population that Died due to COVID (%)')
+    plt.ylabel('Deaths due to COVID')
     plt.show() # plot 5
-'''
+
+# Death statistics 
+
+
 
 cursor.close()
 connection.close() 

@@ -69,10 +69,12 @@ I wanted to see if there were any changes to this trend as time went on, specifi
 
 </div>
 
-Furthermore, Republican and swing state deaths are on the rise, as Democratic state deaths begin to flatten. Nationally, the mortality rate is 2.3%, which could be inflated due to inaccessibility of testing for those experiencing minor symptoms, especially at the beginning of the pandemic. 
+Furthermore, Republican deaths have surpassed Democrat deaths. Over the past month, the number of fatalities has grown 8.6% for Democratic counties and an astounding 18.3% for Republican counties. 
+
+Nationally, the mortality rate is 2.3%, which could be slightly inflated due to inaccessibility of testing for those experiencing minor symptoms, especially at the beginning of the pandemic. 
 
 <div style="text-align: center">
-    <img alt="mortality" src="https://user-images.githubusercontent.com/70925521/99011720-b7ebe680-251a-11eb-8dc9-1bafb57e7936.png" />
+    <img alt="mortality" src="https://user-images.githubusercontent.com/70925521/99321520-01e70c00-283c-11eb-95c9-00a1af20c82c.png" />
 
 </div>
 
