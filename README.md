@@ -64,7 +64,7 @@ The slope of the best-fit line was slightly different among the populations, wit
 I wanted to see if there were any changes to this trend as time went on, specifically as the country began to reopen. I noticed that the gap between Democratic and Republican counties' new cases was narrowing starting right around Memorial Day Weekend, likely in connection with reopenings and the ease of restrictions. Republican new cases even surpassed Democratic new cases in September. 
 
 <div style="text-align: center">
-    <img alt="cases_over_time" src="https://user-images.githubusercontent.com/70925521/99295289-3db9ab80-2813-11eb-98b0-02b3f258bb84.png" />
+    <img alt="cases_over_time" src="https://user-images.githubusercontent.com/70925521/99562140-c06a7400-2995-11eb-8ded-5054aca4bcd0.png" />
 
 </div>
 
@@ -95,7 +95,7 @@ In particular, I noticed an uptick in cases (accounting for population size) in 
 
 
 <div style="text-align: center">
-    <img alt="swing_cases" src="https://user-images.githubusercontent.com/70925521/99027784-0d84bb00-253c-11eb-8616-f0a3e049ad8d.png" />
+    <img alt="swing_cases" src="https://user-images.githubusercontent.com/70925521/99562153-c2343780-2995-11eb-9c9f-5d67c3a8a643.png" />
 
 </div>
 

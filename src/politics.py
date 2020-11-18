@@ -257,7 +257,7 @@ weekly_dems['NewCases_Dems']=weekly_dems['Cases'].diff().astype(float)
 weekly_df=weekly_reps.merge(weekly_dems, on='Date', how='left').drop([36])
 
 if __name__ == "__main__":
-    weekly_df.plot(x="Date", y=['NewCases_Reps','NewCases_Dems'], kind="line", figsize=(8,5.5))  
+    weekly_df.plot(x="Date", y=['NewCases_Dems', 'NewCases_Reps'], kind="line", figsize=(8,5.5))  
     plt.suptitle('Weekly New Cases Over Time by Affiliation', fontsize=12)
     plt.title('Republican New Cases Overtake Democratic New Cases As Reopening Begins Around the Country', fontsize=8)
     plt.xlabel('Date')

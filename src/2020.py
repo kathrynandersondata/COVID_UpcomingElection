@@ -79,6 +79,7 @@ cases_swings_time_query=('with cte as( '
 cursor.execute(cases_swings_time_query)
 cases_swings_time=result(cursor)
 cases_swings_time_df=DataFrame(cases_swings_time, columns=['Date','State','Cases','Deaths','Pop','Cases_Perc','Party'])
+cases_swings_time_df=cases_swings_time_df.sort_values(by='Party')
 
 if __name__ == "__main__":
     sns.lineplot(data=cases_swings_time_df, x='Date',y='Cases_Perc', hue='Party', style='State',ci=None)
